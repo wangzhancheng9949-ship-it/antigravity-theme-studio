@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 2,
+  "updatedAt": "2026-11-25",
+  "themes": [
+    {
+      "id": "terracotta-charcoal",
+      "name": "Terracotta Charcoal",
+      "zhName": "赤陶暖炭",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "温润低蓝光的暖炭灰底色搭配赤陶暖橘强调色，长时间深度阅读与写作极度舒适。",
+      "native": {
+        "preset": "Onyx",
+        "background": "#1F1E1D",
+        "foreground": "#ECEAE4",
+        "accent": "#D97757",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#181716",
+        "cardBg": "#272523",
+        "borderColor": "rgba(236, 234, 228, 0.09)",
+        "codeBg": "#161514",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
+      "id": "obsidian-nebula",
+      "name": "Obsidian Nebula",
+      "zhName": "黑曜星云",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "近乎黑曜石的深空底色叠加高级靛蓝紫微光，现代极客效率美学。",
+      "native": {
+        "preset": "Vesper",
+        "background": "#0F1014",
+        "foreground": "#E6E8F0",
+        "accent": "#7C6BF0",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#0B0C10",
+        "cardBg": "#161821",
+        "borderColor": "rgba(124, 107, 240, 0.18)",
+        "codeBg": "#0A0B0E",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "midnight-cobalt",
+      "name": "Midnight Cobalt",
+      "zhName": "极夜钴蓝",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "极简冷黑基底配电光钴蓝强调色，层次锐利干练，代码与工具调用一目了然。",
+      "native": {
+        "preset": "Onyx",
+        "background": "#121316",
+        "foreground": "#E4E6EB",
+        "accent": "#3B82F6",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#0D0E11",
+        "cardBg": "#191B20",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "codeBg": "#0B0C0F",
+        "radius": "10px",
+        "glass": true
+      }
+    },
+    {
+      "id": "graphite-coral",
+      "name": "Graphite Coral",
+      "zhName": "石墨珊瑚",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "沉稳冷石墨灰与克制的珊瑚红点缀，暗夜质感十足又不显得刺眼。",
+      "native": {
+        "preset": "Onyx",
+        "background": "#141417",
+        "foreground": "#F0F0F5",
+        "accent": "#FF6363",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#0F0F12",
+        "cardBg": "#1C1C21",
+        "borderColor": "rgba(255, 99, 99, 0.16)",
+        "codeBg": "#0D0D10",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "catppuccin-mocha",
+      "name": "Catppuccin Mocha",
+      "zhName": "猫布奇诺 · 摩卡",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Catppuccin)",
+      "description": "开源社区高人气莫兰迪柔和暗色，薰衣草紫强调色优雅治愈，久看不腻。",
+      "native": {
+        "preset": "Nord",
+        "background": "#1E1E2E",
+        "foreground": "#CDD6F4",
+        "accent": "#CBA6F7",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#181825",
+        "cardBg": "#262638",
+        "borderColor": "rgba(203, 166, 247, 0.16)",
+        "codeBg": "#151521",
+        "radius": "14px",
+        "glass": false
+      }
+    },
+    {
+      "id": "tokyo-night",
+      "name": "Tokyo Night",
+      "zhName": "东京之夜",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Tokyo Night)",
+      "description": "深靛蓝夜空背景与霓虹天蓝点缀，极具现代科技感与沉浸感。",
+      "native": {
+        "preset": "Nord",
+        "background": "#1A1B26",
+        "foreground": "#C0CAF5",
+        "accent": "#7AA2F7",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#16161E",
+        "cardBg": "#222436",
+        "borderColor": "rgba(122, 162, 247, 0.18)",
+        "codeBg": "#13141C",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "rose-pine",
+      "name": "Rosé Pine",
+      "zhName": "玫瑰松 · 暗夜",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Rosé Pine)",
+      "description": "低饱和度紫黑底色配柔雾玫瑰金强调色，文艺温柔、辨识度极高。",
+      "native": {
+        "preset": "Vesper",
+        "background": "#191724",
+        "foreground": "#E0DEF4",
+        "accent": "#EBBCBA",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#14121D",
+        "cardBg": "#211F30",
+        "borderColor": "rgba(235, 188, 186, 0.16)",
+        "codeBg": "#12101A",
+        "radius": "14px",
+        "glass": false
+      }
+    },
+    {
+      "id": "kanagawa-wave",
+      "name": "Kanagawa Wave",
+      "zhName": "神奈川海浪",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Kanagawa)",
+      "description": "墨青深海底色与和纸米黄文字，温润古雅，非常护眼。",
+      "native": {
+        "preset": "Everforest Dark",
+        "background": "#1F1F28",
+        "foreground": "#DCD7BA",
+        "accent": "#7E9CD8",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#181820",
+        "cardBg": "#282834",
+        "borderColor": "rgba(220, 215, 186, 0.12)",
+        "codeBg": "#16161D",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
+      "id": "editorial-parchment",
+      "name": "Editorial Parchment",
+      "zhName": "羊皮书卷",
+      "mode": "light",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "温润柔和的书本暖纸白搭配赤陶棕强调色，告别惨白刺眼，长文阅读首选。",
+      "native": {
+        "preset": "Everforest Light",
+        "background": "#F5F4EE",
+        "foreground": "#2D2B28",
+        "accent": "#C96442",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#ECEAE2",
+        "cardBg": "#FAF9F5",
+        "borderColor": "rgba(45, 43, 40, 0.10)",
+        "codeBg": "#EAE7DD",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
+      "id": "ivory-studio",
+      "name": "Ivory Studio",
+      "zhName": "象牙简白",
+      "mode": "light",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "干净克制的现代极简文档风，柔和暖灰文字配晴空蓝强调色，清爽利落。",
+      "native": {
+        "preset": "Legacy Light",
+        "background": "#FBFBFA",
+        "foreground": "#37352F",
+        "accent": "#2383E2",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#F3F2EF",
+        "cardBg": "#FFFFFF",
+        "borderColor": "rgba(55, 53, 47, 0.10)",
+        "codeBg": "#F2F1EE",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
+      "id": "silver-frost",
+      "name": "Silver Frost",
+      "zhName": "极简霜白",
+      "mode": "light",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "通透冷调银白与清澈钴蓝高光，配合微毛玻璃质感尤其精致。",
+      "native": {
+        "preset": "Legacy Light",
+        "background": "#F5F5F7",
+        "foreground": "#1D1D1F",
+        "accent": "#0071E3",
+        "contrast": "default",
+        "font": "System UI",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#EBEBED",
+        "cardBg": "#FFFFFF",
+        "borderColor": "rgba(29, 29, 31, 0.09)",
+        "codeBg": "#EAEAEF",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "matcha-washi",
+      "name": "Matcha Washi",
+      "zhName": "抹茶和纸",
+      "mode": "light",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "极淡豆沙抹茶绿底色与深松针绿文字，全天候深度阅读的森系护眼方案。",
+      "native": {
+        "preset": "Everforest Light",
+        "background": "#F2F5EF",
+        "foreground": "#2C362B",
+        "accent": "#4A7C59",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#E7ECE2",
+        "cardBg": "#F8FAF6",
+        "borderColor": "rgba(44, 54, 43, 0.11)",
+        "codeBg": "#E5EAE0",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
+      "id": "catppuccin-latte",
+      "name": "Catppuccin Latte",
+      "zhName": "猫布奇诺 · 拿铁",
+      "mode": "light",
+      "category": "open-source",
+      "license": "MIT (Catppuccin)",
+      "description": "柔和淡蓝灰浅底搭配高级葡萄紫强调色，浅色模式中难得的温润柔和。",
+      "native": {
+        "preset": "Everforest Light",
+        "background": "#EFF1F5",
+        "foreground": "#4C4F69",
+        "accent": "#8839EF",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#E6E9EF",
+        "cardBg": "#F7F8FB",
+        "borderColor": "rgba(76, 79, 105, 0.12)",
+        "codeBg": "#E4E7EE",
+        "radius": "14px",
+        "glass": false
+      }
+    },
+    {
+      "id": "rose-pine-dawn",
+      "name": "Rosé Pine Dawn",
+      "zhName": "玫瑰松 · 晨曦",
+      "mode": "light",
+      "category": "open-source",
+      "license": "MIT (Rosé Pine)",
+      "description": "奶油暖杏色背景配淡玫瑰粉强调色与紫灰文字，温柔高级的文艺浅色主题。",
+      "native": {
+        "preset": "Everforest Light",
+        "background": "#FAF4ED",
+        "foreground": "#575279",
+        "accent": "#D7827E",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#F2E9E1",
+        "cardBg": "#FFFAF3",
+        "borderColor": "rgba(87, 82, 121, 0.12)",
+        "codeBg": "#EFE6DD",
+        "radius": "14px",
+        "glass": false
+      }
+    }
+  ],
+  "wallpapers": [
+    {
+      "id": "none",
+      "zhName": "无背景图（纯色/柔光）",
+      "name": "Pure Solid"
+    },
+    {
+      "id": "aurora-mesh",
+      "zhName": "极光流体（原创程序化 SVG）",
+      "name": "Aurora Mesh (Procedural)"
+    },
+    {
+      "id": "topo-lines",
+      "zhName": "等高线微纹（原创程序化 SVG）",
+      "name": "Topographic Lines (Procedural)"
+    },
+    {
+      "id": "dot-matrix",
+      "zhName": "极客点阵（原创程序化 SVG）",
+      "name": "Dot Matrix (Procedural)"
+    },
+    {
+      "id": "custom",
+      "zhName": "本地自定义图片（仅存本机）",
+      "name": "Custom Local Image"
+    }
+  ]
+}

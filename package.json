@@ -1,0 +1,16 @@
+{
+  "name": "antigravity-themes",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Cross-platform visual theme studio, native CSS variable remapper, and procedural wallpapers for Google Antigravity 2.0.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node tools/studio-server.mjs",
+    "sync": "node tools/sync-gallery.mjs",
+    "daemon:stop": "node tools/daemon.mjs --stop"
+  }
+}

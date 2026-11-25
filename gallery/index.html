@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antigravity Theme Studio — 跨平台主题工坊</title>
+  <style>
+    :root {
+      --page-bg: #0b0c10;
+      --page-panel: #13151c;
+      --page-border: rgba(255, 255, 255, 0.08);
+      --page-text: #f1f3f8;
+      --page-muted: #939aa8;
+      --page-accent: #7c6bf0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--page-bg);
+      color: var(--page-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 15px 24px;
+      border-bottom: 1px solid var(--page-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: rgba(11, 12, 16, 0.88);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, #7c6bf0, #3b82f6);
+      display: grid; place-items: center; font-weight: 800; font-size: 16px;
+    }
+    .brand h1 { font-size: 16px; font-weight: 700; }
+    .brand p { font-size: 12px; color: var(--page-muted); margin-top: 2px; }
+
+    .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-group {
+      display: flex; background: var(--page-panel); padding: 4px; border-radius: 10px;
+      border: 1px solid var(--page-border); gap: 4px;
+    }
+    .filter-btn {
+      background: transparent; border: none; color: var(--page-muted);
+      padding: 5px 11px; border-radius: 7px; font-size: 12.5px; cursor: pointer;
+    }
+    .filter-btn.active { background: #262936; color: #fff; font-weight: 600; }
+    .filter-btn:hover:not(.active) { color: #fff; }
+
+    .toggle-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--page-panel); border: 1px solid var(--page-border);
+      color: var(--page-text); padding: 7px 12px; border-radius: 9px;
+      font-size: 12.5px; cursor: pointer;
+    }
+    .toggle-btn.active { border-color: var(--page-accent); background: rgba(124, 107, 240, 0.16); }
+    .toggle-btn:hover { border-color: rgba(255,255,255,0.22); }
+
+    main {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 67px);
+    }
+    @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+
+    .theme-list {
+      border-right: 1px solid var(--page-border);
+      padding: 16px;
+      overflow-y: auto;
+      max-height: calc(100vh - 67px);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .theme-card {
+      background: var(--page-panel);
+      border: 1px solid var(--page-border);
+      border-radius: 12px;
+      padding: 12px 13px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .theme-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+    .theme-card.active {
+      border-color: var(--page-accent);
+      box-shadow: 0 0 0 1px var(--page-accent), 0 8px 24px rgba(0,0,0,0.35);
+    }
+    .card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .card-title { font-size: 13.5px; font-weight: 650; }
+    .card-sub { font-size: 11.5px; color: var(--page-muted); }
+    .badge {
+      font-size: 11px; padding: 2px 7px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07); color: var(--page-muted); white-space: nowrap;
+    }
+    .swatches { display: flex; align-items: center; gap: 6px; }
+    .swatch { width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.18); }
+    .card-desc { font-size: 12px; color: var(--page-muted); line-height: 1.45; }
+
+    .preview-pane {
+      padding: 20px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+      max-height: calc(100vh - 67px);
+    }
+
+    /* Mock Window */
+    .mock-window {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 22px 54px rgba(0,0,0,0.48);
+    }
+    .mock-wp-layer {
+      position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      background-position: center; background-size: cover; opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .mock-titlebar {
+      height: 34px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; border-bottom: 1px solid var(--m-border);
+      background: var(--m-sidebar); color: var(--m-fg);
+    }
+    .mock-dots { display: flex; gap: 7px; }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.75; }
+    .mock-body {
+      display: grid; grid-template-columns: 200px 1fr; min-height: 340px;
+      background: var(--m-bg); color: var(--m-fg);
+    }
+    .mock-sidebar {
+      background: var(--m-sidebar); border-right: 1px solid var(--m-border);
+      padding: 12px 10px; display: flex; flex-direction: column; gap: 5px;
+    }
+    .mock-nav-item { padding: 7px 10px; border-radius: var(--m-radius); font-size: 12px; opacity: 0.8; }
+    .mock-nav-item.active { background: var(--m-card); opacity: 1; font-weight: 600; border: 1px solid var(--m-border); }
+    .mock-chat { padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
+    .mock-messages { display: flex; flex-direction: column; gap: 12px; }
+    .mock-user-msg {
+      align-self: flex-end; background: var(--m-card); border: 1px solid var(--m-border);
+      padding: 9px 13px; border-radius: var(--m-radius); font-size: 13px; max-width: 78%;
+    }
+    .mock-ai-msg { display: flex; flex-direction: column; gap: 9px; font-size: 13px; line-height: 1.6; }
+    .mock-pill {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 9px;
+      border-radius: 999px; width: fit-content; font-weight: 600;
+      background: color-mix(in srgb, var(--m-accent) 16%, transparent);
+      color: var(--m-accent); border: 1px solid color-mix(in srgb, var(--m-accent) 32%, transparent);
+    }
+    .mock-code {
+      background: var(--m-code); border: 1px solid var(--m-border); border-radius: var(--m-radius);
+      padding: 10px 13px; font-family: Consolas, monospace; font-size: 12px; line-height: 1.5;
+    }
+    .mock-code .kw { color: var(--m-accent); font-weight: 600; }
+    .mock-code .cm { opacity: 0.52; }
+    .mock-input-box {
+      background: var(--m-card); border: 1px solid var(--m-border); border-radius: var(--m-radius);
+      padding: 9px 12px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .mock-send-btn {
+      background: var(--m-accent); color: #fff; border: none; border-radius: 8px;
+      padding: 5px 13px; font-size: 12px; font-weight: 600;
+    }
+
+    .params-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+    @media (max-width: 1180px) { .params-grid { grid-template-columns: 1fr; } }
+
+    .panel-box {
+      background: var(--page-panel); border: 1px solid var(--page-border);
+      border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .panel-box h2 { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+    .param-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 8px 11px; border-radius: 9px; background: rgba(255,255,255,0.025);
+      border: 1px solid var(--page-border);
+    }
+    .param-label { font-size: 12.5px; color: var(--page-muted); }
+    .param-val { display: flex; align-items: center; gap: 9px; font-family: Consolas, monospace; font-size: 13px; }
+    .color-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.22); }
+    .copy-btn {
+      background: #252836; color: #fff; border: 1px solid var(--page-border);
+      padding: 4px 9px; border-radius: 6px; font-size: 11.5px; cursor: pointer;
+    }
+    .copy-btn:hover { background: var(--page-accent); border-color: var(--page-accent); }
+
+    .wp-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .wp-chip {
+      background: #1d202b; color: var(--page-muted); border: 1px solid var(--page-border);
+      padding: 6px 11px; border-radius: 8px; font-size: 12px; cursor: pointer;
+    }
+    .wp-chip.active { background: rgba(124,107,240,0.2); color: #fff; border-color: var(--page-accent); font-weight: 600; }
+
+    .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--page-muted); }
+    .slider-row input[type="range"] { flex: 1; accent-color: var(--page-accent); cursor: pointer; }
+
+    .action-row { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 2px; }
+    .primary-btn {
+      background: linear-gradient(135deg, #7c6bf0, #4f7df3); color: #fff; border: none;
+      padding: 10px 18px; border-radius: 9px; font-size: 13.5px; font-weight: 650; cursor: pointer;
+    }
+    .secondary-btn {
+      background: #222532; color: #fff; border: 1px solid var(--page-border);
+      padding: 9px 14px; border-radius: 9px; font-size: 12.5px; cursor: pointer;
+    }
+    .primary-btn:hover { filter: brightness(1.08); }
+    .secondary-btn:hover { background: #2c3040; }
+
+    .persist-banner {
+      background: rgba(124, 107, 240, 0.09); border: 1px solid rgba(124, 107, 240, 0.28);
+      border-radius: 10px; padding: 11px 13px; display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12.5px;
+    }
+
+    .toast {
+      position: fixed; bottom: 22px; right: 22px;
+      background: #1e2130; color: #fff; border: 1px solid var(--page-accent);
+      padding: 10px 16px; border-radius: 10px; font-size: 13px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.48);
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: all 0.2s ease; z-index: 100; max-width: 440px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-logo">A</div>
+      <div>
+        <h1>Antigravity Theme Studio</h1>
+        <p>Windows · macOS · Linux 跨平台主题工坊 · 零侵权原创色板与程序化纹理</p>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="filter-group" id="filters">
+        <button class="filter-btn active" data-filter="all">全部 (14)</button>
+        <button class="filter-btn" data-filter="dark">深色 (8)</button>
+        <button class="filter-btn" data-filter="light">浅色 (6)</button>
+        <button class="filter-btn" data-filter="studio-original">工坊原创</button>
+        <button class="filter-btn" data-filter="open-source">MIT 开源经典</button>
+      </div>
+      <button class="toggle-btn active" id="enhanceToggle">✨ 细节增强</button>
+      <button class="toggle-btn" id="liveResetBtn">↺ 恢复官方原版</button>
+      <span class="badge" id="connStatus" style="padding:7px 11px;font-size:12px;">检测连接中…</span>
+    </div>
+  </header>
+
+  <main>
+    <aside class="theme-list" id="themeList"></aside>
+
+    <section class="preview-pane">
+      <div class="mock-window" id="mockWindow">
+        <div class="mock-wp-layer" id="mockWpLayer"></div>
+        <div class="mock-titlebar">
+          <div class="mock-dots">
+            <span class="mock-dot" style="background:#ff5f56"></span>
+            <span class="mock-dot" style="background:#ffbd2e"></span>
+            <span class="mock-dot" style="background:#27c93f"></span>
+          </div>
+          <span id="mockTitle">Antigravity — Terracotta Charcoal</span>
+          <span style="opacity:0.55">v1.0 Cross-Platform</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-sidebar">
+            <div class="mock-nav-item active">+ 新建对话</div>
+            <div class="mock-nav-item">⚡ 自动化</div>
+            <div class="mock-nav-item">🧩 自定义</div>
+            <div class="mock-nav-item active" style="margin-top:8px;">Antigravity 主题工坊</div>
+            <div class="mock-nav-item">跨平台兼容与开源发布</div>
+          </div>
+          <div class="mock-chat">
+            <div class="mock-messages">
+              <div class="mock-user-msg">这套配色在深浅切换和长文代码阅读下的表现怎么样？</div>
+              <div class="mock-ai-msg">
+                <span class="mock-pill" id="mockBadge">✦ 赤陶暖炭 · MIT 原创色板</span>
+                <div id="mockDesc">温润低蓝光的暖炭灰底色搭配赤陶暖橘强调色，长时间深度阅读与写作极度舒适。</div>
+                <div class="mock-code" id="mockCode"></div>
+              </div>
+            </div>
+            <div class="mock-input-box">
+              <span style="font-size:12.5px;opacity:0.5;">想聊什么都可以，@引用，/执行动作…</span>
+              <button class="mock-send-btn">发送</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="persist-banner">
+        <div>
+          <strong>🚀 重启不掉皮肤（跨平台自动保持）</strong>
+          <div style="color:var(--page-muted);margin-top:2px;">点击右侧按钮生成「Antigravity 主题版」启动图标（自动兼容汉化，Win/macOS/Linux 通用），以后用它打开即可自动套用你最后选的主题与壁纸。</div>
+        </div>
+        <button class="secondary-btn" id="createLauncherBtn" style="border-color:var(--page-accent);font-weight:600;">📌 生成桌面「Antigravity 主题版」启动器</button>
+      </div>
+
+      <div class="params-grid">
+        <div class="panel-box">
+          <h2>
+            <span>🖼️ 背景纹理与本地自定义壁纸（零版权风险）</span>
+            <span class="badge">实时叠加</span>
+          </h2>
+          <div class="wp-chips" id="wpChips">
+            <button class="wp-chip active" data-wp="none">纯色无纹理</button>
+            <button class="wp-chip" data-wp="aurora-mesh">极光流体 (SVG)</button>
+            <button class="wp-chip" data-wp="topo-lines">等高线微纹 (SVG)</button>
+            <button class="wp-chip" data-wp="dot-matrix">极客点阵 (SVG)</button>
+            <button class="wp-chip" data-wp="custom" id="customWpChip">📁 选择本机图片…</button>
+          </div>
+          <input type="file" id="wpFileInput" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" />
+
+          <div class="slider-row">
+            <span style="width:92px;">壁纸浓度 <strong id="valOpacity" style="color:#fff">14%</strong></span>
+            <input type="range" id="opacityRange" min="4" max="42" value="14" />
+          </div>
+          <div class="slider-row">
+            <span style="width:92px;">背景模糊 <strong id="valBlur" style="color:#fff">0px</strong></span>
+            <input type="range" id="blurRange" min="0" max="20" value="0" />
+          </div>
+
+          <div class="action-row" style="margin-top:6px;">
+            <button class="primary-btn" id="liveApplyBtn">⚡ 一键实时换肤并保存</button>
+            <button class="secondary-btn" id="copyAllBtn">📋 复制原生参数</button>
+          </div>
+        </div>
+
+        <div class="panel-box">
+          <h2>
+            <span>原生外观 4 项参数（免工具手动备选）</span>
+            <span class="badge" id="modeBadge">深色主题</span>
+          </h2>
+          <div class="param-row">
+            <span class="param-label">预设基底 (Preset)</span>
+            <div class="param-val"><strong id="valPreset">Onyx</strong></div>
+          </div>
+          <div class="param-row">
+            <span class="param-label">背景色 (Background)</span>
+            <div class="param-val">
+              <span class="color-dot" id="dotBg"></span>
+              <span id="valBg">#1F1E1D</span>
+              <button class="copy-btn" data-copy="bg">复制</button>
+            </div>
+          </div>
+          <div class="param-row">
+            <span class="param-label">前景色 (Foreground)</span>
+            <div class="param-val">
+              <span class="color-dot" id="dotFg"></span>
+              <span id="valFg">#ECEAE4</span>
+              <button class="copy-btn" data-copy="fg">复制</button>
+            </div>
+          </div>
+          <div class="param-row">
+            <span class="param-label">强调色 (Accent)</span>
+            <div class="param-val">
+              <span class="color-dot" id="dotAccent"></span>
+              <span id="valAccent">#D97757</span>
+              <button class="copy-btn" data-copy="accent">复制</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">已保存</div>
+
+  <script>
+    // EMBEDDED_THEMES_START
+    let THEMES = [
+  {
+    "id": "terracotta-charcoal",
+    "name": "Terracotta Charcoal",
+    "zhName": "赤陶暖炭",
+    "mode": "dark",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "温润低蓝光的暖炭灰底色搭配赤陶暖橘强调色，长时间深度阅读与写作极度舒适。",
+    "native": {
+      "preset": "Onyx",
+      "background": "#1F1E1D",
+      "foreground": "#ECEAE4",
+      "accent": "#D97757",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#181716",
+      "cardBg": "#272523",
+      "borderColor": "rgba(236, 234, 228, 0.09)",
+      "codeBg": "#161514",
+      "radius": "12px",
+      "glass": false
+    }
+  },
+  {
+    "id": "obsidian-nebula",
+    "name": "Obsidian Nebula",
+    "zhName": "黑曜星云",
+    "mode": "dark",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "近乎黑曜石的深空底色叠加高级靛蓝紫微光，现代极客效率美学。",
+    "native": {
+      "preset": "Vesper",
+      "background": "#0F1014",
+      "foreground": "#E6E8F0",
+      "accent": "#7C6BF0",
+      "contrast": "default",
+      "font": "Inter",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#0B0C10",
+      "cardBg": "#161821",
+      "borderColor": "rgba(124, 107, 240, 0.18)",
+      "codeBg": "#0A0B0E",
+      "radius": "12px",
+      "glass": true
+    }
+  },
+  {
+    "id": "midnight-cobalt",
+    "name": "Midnight Cobalt",
+    "zhName": "极夜钴蓝",
+    "mode": "dark",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "极简冷黑基底配电光钴蓝强调色，层次锐利干练，代码与工具调用一目了然。",
+    "native": {
+      "preset": "Onyx",
+      "background": "#121316",
+      "foreground": "#E4E6EB",
+      "accent": "#3B82F6",
+      "contrast": "default",
+      "font": "Inter",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#0D0E11",
+      "cardBg": "#191B20",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "codeBg": "#0B0C0F",
+      "radius": "10px",
+      "glass": true
+    }
+  },
+  {
+    "id": "graphite-coral",
+    "name": "Graphite Coral",
+    "zhName": "石墨珊瑚",
+    "mode": "dark",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "沉稳冷石墨灰与克制的珊瑚红点缀，暗夜质感十足又不显得刺眼。",
+    "native": {
+      "preset": "Onyx",
+      "background": "#141417",
+      "foreground": "#F0F0F5",
+      "accent": "#FF6363",
+      "contrast": "default",
+      "font": "Inter",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#0F0F12",
+      "cardBg": "#1C1C21",
+      "borderColor": "rgba(255, 99, 99, 0.16)",
+      "codeBg": "#0D0D10",
+      "radius": "12px",
+      "glass": true
+    }
+  },
+  {
+    "id": "catppuccin-mocha",
+    "name": "Catppuccin Mocha",
+    "zhName": "猫布奇诺 · 摩卡",
+    "mode": "dark",
+    "category": "open-source",
+    "license": "MIT (Catppuccin)",
+    "description": "开源社区高人气莫兰迪柔和暗色，薰衣草紫强调色优雅治愈，久看不腻。",
+    "native": {
+      "preset": "Nord",
+      "background": "#1E1E2E",
+      "foreground": "#CDD6F4",
+      "accent": "#CBA6F7",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#181825",
+      "cardBg": "#262638",
+      "borderColor": "rgba(203, 166, 247, 0.16)",
+      "codeBg": "#151521",
+      "radius": "14px",
+      "glass": false
+    }
+  },
+  {
+    "id": "tokyo-night",
+    "name": "Tokyo Night",
+    "zhName": "东京之夜",
+    "mode": "dark",
+    "category": "open-source",
+    "license": "MIT (Tokyo Night)",
+    "description": "深靛蓝夜空背景与霓虹天蓝点缀，极具现代科技感与沉浸感。",
+    "native": {
+      "preset": "Nord",
+      "background": "#1A1B26",
+      "foreground": "#C0CAF5",
+      "accent": "#7AA2F7",
+      "contrast": "default",
+      "font": "Inter",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#16161E",
+      "cardBg": "#222436",
+      "borderColor": "rgba(122, 162, 247, 0.18)",
+      "codeBg": "#13141C",
+      "radius": "12px",
+      "glass": true
+    }
+  },
+  {
+    "id": "rose-pine",
+    "name": "Rosé Pine",
+    "zhName": "玫瑰松 · 暗夜",
+    "mode": "dark",
+    "category": "open-source",
+    "license": "MIT (Rosé Pine)",
+    "description": "低饱和度紫黑底色配柔雾玫瑰金强调色，文艺温柔、辨识度极高。",
+    "native": {
+      "preset": "Vesper",
+      "background": "#191724",
+      "foreground": "#E0DEF4",
+      "accent": "#EBBCBA",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#14121D",
+      "cardBg": "#211F30",
+      "borderColor": "rgba(235, 188, 186, 0.16)",
+      "codeBg": "#12101A",
+      "radius": "14px",
+      "glass": false
+    }
+  },
+  {
+    "id": "kanagawa-wave",
+    "name": "Kanagawa Wave",
+    "zhName": "神奈川海浪",
+    "mode": "dark",
+    "category": "open-source",
+    "license": "MIT (Kanagawa)",
+    "description": "墨青深海底色与和纸米黄文字，温润古雅，非常护眼。",
+    "native": {
+      "preset": "Everforest Dark",
+      "background": "#1F1F28",
+      "foreground": "#DCD7BA",
+      "accent": "#7E9CD8",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#181820",
+      "cardBg": "#282834",
+      "borderColor": "rgba(220, 215, 186, 0.12)",
+      "codeBg": "#16161D",
+      "radius": "10px",
+      "glass": false
+    }
+  },
+  {
+    "id": "editorial-parchment",
+    "name": "Editorial Parchment",
+    "zhName": "羊皮书卷",
+    "mode": "light",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "温润柔和的书本暖纸白搭配赤陶棕强调色，告别惨白刺眼，长文阅读首选。",
+    "native": {
+      "preset": "Everforest Light",
+      "background": "#F5F4EE",
+      "foreground": "#2D2B28",
+      "accent": "#C96442",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#ECEAE2",
+      "cardBg": "#FAF9F5",
+      "borderColor": "rgba(45, 43, 40, 0.10)",
+      "codeBg": "#EAE7DD",
+      "radius": "12px",
+      "glass": false
+    }
+  },
+  {
+    "id": "ivory-studio",
+    "name": "Ivory Studio",
+    "zhName": "象牙简白",
+    "mode": "light",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "干净克制的现代极简文档风，柔和暖灰文字配晴空蓝强调色，清爽利落。",
+    "native": {
+      "preset": "Legacy Light",
+      "background": "#FBFBFA",
+      "foreground": "#37352F",
+      "accent": "#2383E2",
+      "contrast": "default",
+      "font": "Inter",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#F3F2EF",
+      "cardBg": "#FFFFFF",
+      "borderColor": "rgba(55, 53, 47, 0.10)",
+      "codeBg": "#F2F1EE",
+      "radius": "10px",
+      "glass": false
+    }
+  },
+  {
+    "id": "silver-frost",
+    "name": "Silver Frost",
+    "zhName": "极简霜白",
+    "mode": "light",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "通透冷调银白与清澈钴蓝高光，配合微毛玻璃质感尤其精致。",
+    "native": {
+      "preset": "Legacy Light",
+      "background": "#F5F5F7",
+      "foreground": "#1D1D1F",
+      "accent": "#0071E3",
+      "contrast": "default",
+      "font": "System UI",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#EBEBED",
+      "cardBg": "#FFFFFF",
+      "borderColor": "rgba(29, 29, 31, 0.09)",
+      "codeBg": "#EAEAEF",
+      "radius": "12px",
+      "glass": true
+    }
+  },
+  {
+    "id": "matcha-washi",
+    "name": "Matcha Washi",
+    "zhName": "抹茶和纸",
+    "mode": "light",
+    "category": "studio-original",
+    "license": "MIT (Original)",
+    "description": "极淡豆沙抹茶绿底色与深松针绿文字，全天候深度阅读的森系护眼方案。",
+    "native": {
+      "preset": "Everforest Light",
+      "background": "#F2F5EF",
+      "foreground": "#2C362B",
+      "accent": "#4A7C59",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#E7ECE2",
+      "cardBg": "#F8FAF6",
+      "borderColor": "rgba(44, 54, 43, 0.11)",
+      "codeBg": "#E5EAE0",
+      "radius": "12px",
+      "glass": false
+    }
+  },
+  {
+    "id": "catppuccin-latte",
+    "name": "Catppuccin Latte",
+    "zhName": "猫布奇诺 · 拿铁",
+    "mode": "light",
+    "category": "open-source",
+    "license": "MIT (Catppuccin)",
+    "description": "柔和淡蓝灰浅底搭配高级葡萄紫强调色，浅色模式中难得的温润柔和。",
+    "native": {
+      "preset": "Everforest Light",
+      "background": "#EFF1F5",
+      "foreground": "#4C4F69",
+      "accent": "#8839EF",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#E6E9EF",
+      "cardBg": "#F7F8FB",
+      "borderColor": "rgba(76, 79, 105, 0.12)",
+      "codeBg": "#E4E7EE",
+      "radius": "14px",
+      "glass": false
+    }
+  },
+  {
+    "id": "rose-pine-dawn",
+    "name": "Rosé Pine Dawn",
+    "zhName": "玫瑰松 · 晨曦",
+    "mode": "light",
+    "category": "open-source",
+    "license": "MIT (Rosé Pine)",
+    "description": "奶油暖杏色背景配淡玫瑰粉强调色与紫灰文字，温柔高级的文艺浅色主题。",
+    "native": {
+      "preset": "Everforest Light",
+      "background": "#FAF4ED",
+      "foreground": "#575279",
+      "accent": "#D7827E",
+      "contrast": "default",
+      "font": "Google Sans",
+      "fontSize": 14
+    },
+    "enhanced": {
+      "sidebarBg": "#F2E9E1",
+      "cardBg": "#FFFAF3",
+      "borderColor": "rgba(87, 82, 121, 0.12)",
+      "codeBg": "#EFE6DD",
+      "radius": "14px",
+      "glass": false
+    }
+  }
+];
+    // EMBEDDED_THEMES_END
+
+    let currentFilter = 'all';
+    let currentTheme = THEMES[0];
+    let enhancedEnabled = true;
+    let wallpaperId = 'none';
+    let wallpaperOpacity = 0.14;
+    let wallpaperBlur = 0;
+    let customPreviewUrl = '';
+
+    const listEl = document.getElementById('themeList');
+    const mockWindow = document.getElementById('mockWindow');
+    const mockWpLayer = document.getElementById('mockWpLayer');
+    const toastEl = document.getElementById('toast');
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    function copyText(text, label) {
+      navigator.clipboard.writeText(text).then(() => showToast(`已复制 ${label}: ${text}`));
+    }
+
+    function getProceduralPreviewUrl(wpId, accent, fg) {
+      const enc = s => `data:image/svg+xml;utf8,${encodeURIComponent(s)}`;
+      if (wpId === 'aurora-mesh') {
+        return enc(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><radialGradient id="a" cx="20%" cy="18%" r="55%"><stop offset="0%" stop-color="${accent}" stop-opacity="0.7"/><stop offset="100%" stop-color="${accent}" stop-opacity="0"/></radialGradient><radialGradient id="b" cx="82%" cy="22%" r="50%"><stop offset="0%" stop-color="#6366f1" stop-opacity="0.5"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="800" fill="url(#a)"/><rect width="1200" height="800" fill="url(#b)"/></svg>`);
+      }
+      if (wpId === 'topo-lines') {
+        return enc(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><g fill="none" stroke="${accent}" stroke-opacity="0.35" stroke-width="1.3"><path d="M-50 80 C 120 20, 260 150, 650 60"/><path d="M-50 150 C 150 70, 300 210, 650 130"/><path d="M-50 230 C 180 140, 320 290, 650 210"/><ellipse cx="440" cy="140" rx="110" ry="52"/></g></svg>`);
+      }
+      if (wpId === 'dot-matrix') {
+        return enc(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.4" fill="${fg}" fill-opacity="0.32"/></svg>`);
+      }
+      return '';
+    }
+
+    function renderList() {
+      const filtered = THEMES.filter(t => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'dark' || currentFilter === 'light') return t.mode === currentFilter;
+        return t.category === currentFilter;
+      });
+
+      listEl.innerHTML = filtered.map(t => `
+        <div class="theme-card ${t.id === currentTheme.id ? 'active' : ''}" data-id="${t.id}">
+          <div class="card-top">
+            <div>
+              <div class="card-title">${t.zhName}</div>
+              <div class="card-sub">${t.name} · ${t.license}</div>
+            </div>
+            <span class="badge">${t.mode === 'dark' ? '深色' : '浅色'}</span>
+          </div>
+          <div class="swatches">
+            <span class="swatch" style="background:${t.native.background}"></span>
+            <span class="swatch" style="background:${t.native.foreground}"></span>
+            <span class="swatch" style="background:${t.native.accent}"></span>
+            <span class="swatch" style="background:${t.enhanced.sidebarBg}"></span>
+          </div>
+          <div class="card-desc">${t.description}</div>
+        </div>
+      `).join('');
+
+      listEl.querySelectorAll('.theme-card').forEach(el => {
+        el.addEventListener('click', () => {
+          currentTheme = THEMES.find(x => x.id === el.dataset.id);
+          renderList();
+          renderPreview();
+        });
+      });
+    }
+
+    function renderPreview() {
+      const t = currentTheme;
+      mockWindow.style.setProperty('--m-bg', t.native.background);
+      mockWindow.style.setProperty('--m-fg', t.native.foreground);
+      mockWindow.style.setProperty('--m-accent', t.native.accent);
+      mockWindow.style.setProperty('--m-sidebar', enhancedEnabled ? t.enhanced.sidebarBg : t.native.background);
+      mockWindow.style.setProperty('--m-card', enhancedEnabled ? t.enhanced.cardBg : `color-mix(in srgb, ${t.native.foreground} 6%, ${t.native.background})`);
+      mockWindow.style.setProperty('--m-code', enhancedEnabled ? t.enhanced.codeBg : `color-mix(in srgb, ${t.native.foreground} 8%, ${t.native.background})`);
+      mockWindow.style.setProperty('--m-border', enhancedEnabled ? t.enhanced.borderColor : `color-mix(in srgb, ${t.native.foreground} 12%, transparent)`);
+      mockWindow.style.setProperty('--m-radius', enhancedEnabled ? t.enhanced.radius : '8px');
+
+      let wpUrl = '';
+      if (wallpaperId === 'custom' && customPreviewUrl) wpUrl = customPreviewUrl;
+      else if (wallpaperId !== 'none' && wallpaperId !== 'custom') wpUrl = getProceduralPreviewUrl(wallpaperId, t.native.accent, t.native.foreground);
+
+      if (wpUrl) {
+        mockWpLayer.style.backgroundImage = `url("${wpUrl}")`;
+        mockWpLayer.style.backgroundRepeat = wallpaperId === 'dot-matrix' || wallpaperId === 'topo-lines' ? 'repeat' : 'no-repeat';
+        mockWpLayer.style.backgroundSize = wallpaperId === 'dot-matrix' ? '24px 24px' : (wallpaperId === 'topo-lines' ? '600px 400px' : 'cover');
+        mockWpLayer.style.opacity = String(wallpaperOpacity);
+        mockWpLayer.style.filter = wallpaperBlur > 0 ? `blur(${wallpaperBlur}px)` : 'none';
+      } else {
+        mockWpLayer.style.opacity = '0';
+      }
+
+      document.getElementById('mockTitle').textContent = `Antigravity — ${t.name} (${t.zhName})`;
+      document.getElementById('mockBadge').textContent = `✦ ${t.zhName} · ${t.license}`;
+      document.getElementById('mockDesc').textContent = t.description;
+      document.getElementById('modeBadge').textContent = t.mode === 'dark' ? '深色主题' : '浅色主题';
+      document.getElementById('valPreset').textContent = t.native.preset;
+      document.getElementById('valBg').textContent = t.native.background;
+      document.getElementById('valFg').textContent = t.native.foreground;
+      document.getElementById('valAccent').textContent = t.native.accent;
+      document.getElementById('dotBg').style.background = t.native.background;
+      document.getElementById('dotFg').style.background = t.native.foreground;
+      document.getElementById('dotAccent').style.background = t.native.accent;
+
+      document.getElementById('mockCode').innerHTML = `
+        <div><span class="cm">// 跨平台兼容 Windows · macOS · Linux | 重启自动保持</span></div>
+        <div><span class="kw">export const</span> activeTheme = <span class="kw">"${t.id}"</span>;</div>
+        <div><span class="kw">export const</span> wallpaper = <span class="kw">"${wallpaperId}"</span>;</div>
+      `;
+
+      document.querySelectorAll('#wpChips .wp-chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.wp === wallpaperId);
+      });
+    }
+
+    async function applyToClient() {
+      if (!location.protocol.startsWith('http')) {
+        showToast('当前为静态预览模式；运行本地启动脚本即可一键实时换肤！');
+        return;
+      }
+      try {
+        const res = await fetch('/api/apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            themeId: currentTheme.id,
+            enhanced: enhancedEnabled,
+            autoPersist: true,
+            wallpaperId,
+            wallpaperOpacity,
+            wallpaperBlur
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          showToast(`提示：${data.error}`);
+        } else if (data.savedOnly) {
+          showToast(data.message);
+        } else {
+          showToast(`⚡ 已实时生效并保存：${data.themeName}（已重映射 ${data.mappedVars} 项原生色阶）`);
+        }
+      } catch {
+        showToast('连接本地主题服务失败，请重新运行启动脚本');
+      }
+    }
+
+    async function initStudioState() {
+      const badge = document.getElementById('connStatus');
+      if (!location.protocol.startsWith('http')) {
+        badge.textContent = '🌐 静态画廊预览模式';
+        return;
+      }
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        if (data.connected) {
+          badge.textContent = `🟢 已连接 Antigravity (${data.platform} · 端口 ${data.port})`;
+          badge.style.color = '#4ade80';
+        } else {
+          badge.textContent = `🟡 待连接客户端（可先点「生成桌面启动器」）`;
+          badge.style.color = '#facc15';
+        }
+        if (data.state) {
+          if (data.state.activeThemeId) {
+            const found = THEMES.find(x => x.id === data.state.activeThemeId);
+            if (found) currentTheme = found;
+          }
+          enhancedEnabled = data.state.enhanced !== false;
+          document.getElementById('enhanceToggle').classList.toggle('active', enhancedEnabled);
+          wallpaperId = data.state.wallpaperId || 'none';
+          wallpaperOpacity = Number(data.state.wallpaperOpacity ?? 0.14);
+          wallpaperBlur = Number(data.state.wallpaperBlur ?? 0);
+          document.getElementById('opacityRange').value = Math.round(wallpaperOpacity * 100);
+          document.getElementById('valOpacity').textContent = `${Math.round(wallpaperOpacity * 100)}%`;
+          document.getElementById('blurRange').value = wallpaperBlur;
+          document.getElementById('valBlur').textContent = `${wallpaperBlur}px`;
+          renderList();
+          renderPreview();
+        }
+      } catch {
+        badge.textContent = '⚪ 本地服务未响应';
+      }
+    }
+
+    document.querySelectorAll('#filters .filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#filters .filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderList();
+      });
+    });
+
+    document.getElementById('enhanceToggle').addEventListener('click', e => {
+      enhancedEnabled = !enhancedEnabled;
+      e.currentTarget.classList.toggle('active', enhancedEnabled);
+      renderPreview();
+    });
+
+    document.querySelectorAll('#wpChips .wp-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const wp = chip.dataset.wp;
+        if (wp === 'custom') {
+          document.getElementById('wpFileInput').click();
+          return;
+        }
+        wallpaperId = wp;
+        renderPreview();
+      });
+    });
+
+    document.getElementById('wpFileInput').addEventListener('change', e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (file.size > 8 * 1024 * 1024) {
+        showToast('请选择 8MB 以内的图片文件');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        customPreviewUrl = String(reader.result);
+        wallpaperId = 'custom';
+        renderPreview();
+        if (location.protocol.startsWith('http')) {
+          const res = await fetch('/api/wallpaper', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ dataUrl: customPreviewUrl })
+          });
+          const data = await res.json();
+          if (data.ok) applyToClient();
+          else showToast(data.error || '上传失败');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('opacityRange').addEventListener('input', e => {
+      wallpaperOpacity = Number(e.target.value) / 100;
+      document.getElementById('valOpacity').textContent = `${e.target.value}%`;
+      renderPreview();
+    });
+    document.getElementById('opacityRange').addEventListener('change', () => {
+      if (wallpaperId !== 'none') applyToClient();
+    });
+
+    document.getElementById('blurRange').addEventListener('input', e => {
+      wallpaperBlur = Number(e.target.value);
+      document.getElementById('valBlur').textContent = `${wallpaperBlur}px`;
+      renderPreview();
+    });
+    document.getElementById('blurRange').addEventListener('change', () => {
+      if (wallpaperId !== 'none') applyToClient();
+    });
+
+    document.getElementById('liveApplyBtn').addEventListener('click', applyToClient);
+
+    document.getElementById('liveResetBtn').addEventListener('click', async () => {
+      if (!location.protocol.startsWith('http')) return;
+      const res = await fetch('/api/reset', { method: 'POST' });
+      const data = await res.json();
+      if (data.ok) showToast('↺ 已恢复官方原版样式，并清除自动挂载');
+    });
+
+    document.getElementById('createLauncherBtn').addEventListener('click', async () => {
+      if (!location.protocol.startsWith('http')) {
+        showToast('请先通过本地启动脚本运行工坊服务');
+        return;
+      }
+      const res = await fetch('/api/create-launcher', { method: 'POST' });
+      const data = await res.json();
+      if (data.ok) {
+        showToast(`✅ 已创建跨平台启动器：${data.path}`);
+      } else {
+        showToast(`创建失败：${data.error}`);
+      }
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const map = {
+          bg: ['背景色', currentTheme.native.background.replace('#', '')],
+          fg: ['前景色', currentTheme.native.foreground.replace('#', '')],
+          accent: ['强调色', currentTheme.native.accent.replace('#', '')]
+        };
+        const [label, val] = map[btn.dataset.copy];
+        copyText(val, label);
+      });
+    });
+
+    document.getElementById('copyAllBtn').addEventListener('click', () => {
+      const t = currentTheme;
+      copyText(
+        `${t.zhName} (${t.name}) | 预设:${t.native.preset} | 背景:${t.native.background.replace('#','')} | 前景:${t.native.foreground.replace('#','')} | 强调:${t.native.accent.replace('#','')}`,
+        '原生配方'
+      );
+    });
+
+    renderList();
+    renderPreview();
+    initStudioState();
+  </script>
+</body>
+</html>
