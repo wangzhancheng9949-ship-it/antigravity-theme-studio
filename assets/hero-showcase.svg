@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0C10"/>
+      <stop offset="50%" stop-color="#12141E"/>
+      <stop offset="100%" stop-color="#0D1017"/>
+    </linearGradient>
+    <radialGradient id="topGlow" cx="50%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#7C6BF0" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#7C6BF0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7C6BF0"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Canvas -->
+  <rect width="1200" height="660" rx="20" fill="url(#bgGrad)"/>
+  <rect width="1200" height="660" rx="20" fill="url(#topGlow)"/>
+
+  <!-- Header Title -->
+  <rect x="48" y="34" width="38" height="38" rx="10" fill="url(#badgeGrad)"/>
+  <text x="67" y="59" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="800">A</text>
+  <text x="100" y="53" fill="#F3F4F8" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700">Antigravity Theme Studio</text>
+  <text x="100" y="74" fill="#949BA8" font-family="system-ui, -apple-system, sans-serif" font-size="13">14 Curated Palettes · Visual Color Mixer · Auto Day/Night · Procedural Wallpapers · Zero-Patch</text>
+
+  <rect x="972" y="38" width="180" height="30" rx="15" fill="#1C1F2E" stroke="#7C6BF0" stroke-opacity="0.45"/>
+  <text x="1062" y="58" text-anchor="middle" fill="#C4B5FD" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">Windows · macOS · Linux</text>
+
+  <!-- Card 1: Obsidian Nebula (Dark) -->
+  <g transform="translate(48, 102)">
+    <rect width="538" height="252" rx="14" fill="#0F1014" stroke="#7C6BF0" stroke-opacity="0.35"/>
+    <rect width="538" height="30" rx="14" fill="#0B0C10"/>
+    <rect y="16" width="538" height="14" fill="#0B0C10"/>
+    <circle cx="18" cy="15" r="4.5" fill="#FF5F56"/>
+    <circle cx="32" cy="15" r="4.5" fill="#FFBD2E"/>
+    <circle cx="46" cy="15" r="4.5" fill="#27C93F"/>
+    <text x="269" y="19" text-anchor="middle" fill="#E6E8F0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Obsidian Nebula · 黑曜星云</text>
+    <!-- Sidebar -->
+    <rect x="1" y="30" width="128" height="221" fill="#0B0C10"/>
+    <rect x="10" y="42" width="110" height="24" rx="7" fill="#161821" stroke="#7C6BF0" stroke-opacity="0.28"/>
+    <text x="20" y="58" fill="#E6E8F0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">+ New Chat</text>
+    <rect x="10" y="74" width="90" height="10" rx="4" fill="#232634"/>
+    <rect x="10" y="92" width="102" height="10" rx="4" fill="#232634"/>
+    <!-- Chat Area -->
+    <rect x="290" y="44" width="228" height="30" rx="9" fill="#161821" stroke="#7C6BF0" stroke-opacity="0.24"/>
+    <text x="304" y="63" fill="#E6E8F0" font-family="system-ui, sans-serif" font-size="11">Switch to Obsidian Nebula dark mode</text>
+    <rect x="148" y="88" width="136" height="20" rx="10" fill="#7C6BF0" fill-opacity="0.2"/>
+    <text x="160" y="102" fill="#9F8FEF" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">✦ Native Token Curve</text>
+    <rect x="148" y="118" width="370" height="68" rx="9" fill="#0A0B0E" stroke="#7C6BF0" stroke-opacity="0.22"/>
+    <text x="162" y="140" fill="#7C6BF0" font-family="Consolas, monospace" font-size="11.5">const</text>
+    <text x="202" y="140" fill="#E6E8F0" font-family="Consolas, monospace" font-size="11.5">palette = { bg: "#0F1014", accent: "#7C6BF0" };</text>
+    <text x="162" y="162" fill="#6E768A" font-family="Consolas, monospace" font-size="11">// Zero app.asar patch · Survives auto-updates</text>
+    <rect x="148" y="202" width="370" height="34" rx="10" fill="#161821" stroke="#7C6BF0" stroke-opacity="0.3"/>
+    <rect x="466" y="208" width="44" height="22" rx="6" fill="#7C6BF0"/>
+    <text x="488" y="223" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Send</text>
+  </g>
+
+  <!-- Card 2: Editorial Parchment (Warm Light) -->
+  <g transform="translate(614, 102)">
+    <rect width="538" height="252" rx="14" fill="#F5F4EE" stroke="#C96442" stroke-opacity="0.35"/>
+    <rect width="538" height="30" rx="14" fill="#ECEAE2"/>
+    <rect y="16" width="538" height="14" fill="#ECEAE2"/>
+    <circle cx="18" cy="15" r="4.5" fill="#FF5F56"/>
+    <circle cx="32" cy="15" r="4.5" fill="#FFBD2E"/>
+    <circle cx="46" cy="15" r="4.5" fill="#27C93F"/>
+    <text x="269" y="19" text-anchor="middle" fill="#2D2B28" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Editorial Parchment · 羊皮书卷</text>
+    <rect x="1" y="30" width="128" height="221" fill="#ECEAE2"/>
+    <rect x="10" y="42" width="110" height="24" rx="7" fill="#FAF9F5" stroke="#2D2B28" stroke-opacity="0.1"/>
+    <text x="20" y="58" fill="#2D2B28" font-family="system-ui, sans-serif" font-size="11" font-weight="600">+ New Chat</text>
+    <rect x="10" y="74" width="90" height="10" rx="4" fill="#DDD9CE"/>
+    <rect x="10" y="92" width="102" height="10" rx="4" fill="#DDD9CE"/>
+    <rect x="290" y="44" width="228" height="30" rx="9" fill="#FAF9F5" stroke="#2D2B28" stroke-opacity="0.1"/>
+    <text x="304" y="63" fill="#2D2B28" font-family="system-ui, sans-serif" font-size="11">Eye-friendly warm paper for daytime</text>
+    <rect x="148" y="88" width="142" height="20" rx="10" fill="#C96442" fill-opacity="0.15"/>
+    <text x="160" y="102" fill="#C96442" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">☀️ Auto Day Schedule</text>
+    <rect x="148" y="118" width="370" height="68" rx="9" fill="#EAE7DD" stroke="#2D2B28" stroke-opacity="0.1"/>
+    <text x="162" y="140" fill="#C96442" font-family="Consolas, monospace" font-size="11.5">const</text>
+    <text x="202" y="140" fill="#2D2B28" font-family="Consolas, monospace" font-size="11.5">daylight = { bg: "#F5F4EE", accent: "#C96442" };</text>
+    <text x="162" y="162" fill="#78736A" font-family="Consolas, monospace" font-size="11">// Low-glare warm parchment · WCAG AAA contrast</text>
+    <rect x="148" y="202" width="370" height="34" rx="10" fill="#FAF9F5" stroke="#C96442" stroke-opacity="0.28"/>
+    <rect x="466" y="208" width="44" height="22" rx="6" fill="#C96442"/>
+    <text x="488" y="223" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Send</text>
+  </g>
+
+  <!-- Card 3: Catppuccin Mocha (Dark Pastel) -->
+  <g transform="translate(48, 376)">
+    <rect width="538" height="252" rx="14" fill="#1E1E2E" stroke="#CBA6F7" stroke-opacity="0.35"/>
+    <rect width="538" height="30" rx="14" fill="#181825"/>
+    <rect y="16" width="538" height="14" fill="#181825"/>
+    <circle cx="18" cy="15" r="4.5" fill="#FF5F56"/>
+    <circle cx="32" cy="15" r="4.5" fill="#FFBD2E"/>
+    <circle cx="46" cy="15" r="4.5" fill="#27C93F"/>
+    <text x="269" y="19" text-anchor="middle" fill="#CDD6F4" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Catppuccin Mocha · 猫布奇诺摩卡</text>
+    <rect x="1" y="30" width="128" height="221" fill="#181825"/>
+    <rect x="10" y="42" width="110" height="24" rx="7" fill="#262638" stroke="#CBA6F7" stroke-opacity="0.25"/>
+    <text x="20" y="58" fill="#CDD6F4" font-family="system-ui, sans-serif" font-size="11" font-weight="600">+ New Chat</text>
+    <rect x="10" y="74" width="90" height="10" rx="4" fill="#313244"/>
+    <rect x="10" y="92" width="102" height="10" rx="4" fill="#313244"/>
+    <rect x="290" y="44" width="228" height="30" rx="9" fill="#262638" stroke="#CBA6F7" stroke-opacity="0.2"/>
+    <text x="304" y="63" fill="#CDD6F4" font-family="system-ui, sans-serif" font-size="11">Share custom theme codes in 1 click</text>
+    <rect x="148" y="88" width="142" height="20" rx="10" fill="#CBA6F7" fill-opacity="0.18"/>
+    <text x="160" y="102" fill="#CBA6F7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">🔗 Shareable Code</text>
+    <rect x="148" y="118" width="370" height="68" rx="9" fill="#151521" stroke="#CBA6F7" stroke-opacity="0.2"/>
+    <text x="162" y="140" fill="#CBA6F7" font-family="Consolas, monospace" font-size="11.5">agy-theme://v1/</text>
+    <text x="272" y="140" fill="#CDD6F4" font-family="Consolas, monospace" font-size="11.5">eyJuIjoiQ2F0cHB1Y2NpbiJ9</text>
+    <text x="162" y="162" fill="#7F849C" font-family="Consolas, monospace" font-size="11">// Soothing pastel dark · MIT community classic</text>
+    <rect x="148" y="202" width="370" height="34" rx="10" fill="#262638" stroke="#CBA6F7" stroke-opacity="0.28"/>
+    <rect x="466" y="208" width="44" height="22" rx="6" fill="#CBA6F7"/>
+    <text x="488" y="223" text-anchor="middle" fill="#181825" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">Send</text>
+  </g>
+
+  <!-- Card 4: Matcha Washi (Soft Green Light) -->
+  <g transform="translate(614, 376)">
+    <rect width="538" height="252" rx="14" fill="#F2F5EF" stroke="#4A7C59" stroke-opacity="0.35"/>
+    <rect width="538" height="30" rx="14" fill="#E7ECE2"/>
+    <rect y="16" width="538" height="14" fill="#E7ECE2"/>
+    <circle cx="18" cy="15" r="4.5" fill="#FF5F56"/>
+    <circle cx="32" cy="15" r="4.5" fill="#FFBD2E"/>
+    <circle cx="46" cy="15" r="4.5" fill="#27C93F"/>
+    <text x="269" y="19" text-anchor="middle" fill="#2C362B" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Matcha Washi · 抹茶和纸</text>
+    <rect x="1" y="30" width="128" height="221" fill="#E7ECE2"/>
+    <rect x="10" y="42" width="110" height="24" rx="7" fill="#F8FAF6" stroke="#2C362B" stroke-opacity="0.1"/>
+    <text x="20" y="58" fill="#2C362B" font-family="system-ui, sans-serif" font-size="11" font-weight="600">+ New Chat</text>
+    <rect x="10" y="74" width="90" height="10" rx="4" fill="#D5DEC9"/>
+    <rect x="10" y="92" width="102" height="10" rx="4" fill="#D5DEC9"/>
+    <rect x="290" y="44" width="228" height="30" rx="9" fill="#F8FAF6" stroke="#2C362B" stroke-opacity="0.1"/>
+    <text x="304" y="63" fill="#2C362B" font-family="system-ui, sans-serif" font-size="11">Overlay procedural SVG or custom art</text>
+    <rect x="148" y="88" width="154" height="20" rx="10" fill="#4A7C59" fill-opacity="0.15"/>
+    <text x="160" y="102" fill="#4A7C59" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">🍃 Botanical Eye-Care</text>
+    <rect x="148" y="118" width="370" height="68" rx="9" fill="#E5EAE0" stroke="#2C362B" stroke-opacity="0.1"/>
+    <text x="162" y="140" fill="#4A7C59" font-family="Consolas, monospace" font-size="11.5">const</text>
+    <text x="202" y="140" fill="#2C362B" font-family="Consolas, monospace" font-size="11.5">washi = { bg: "#F2F5EF", accent: "#4A7C59" };</text>
+    <text x="162" y="162" fill="#637261" font-family="Consolas, monospace" font-size="11">// Calm Japanese stationery green · All-day comfort</text>
+    <rect x="148" y="202" width="370" height="34" rx="10" fill="#F8FAF6" stroke="#4A7C59" stroke-opacity="0.28"/>
+    <rect x="466" y="208" width="44" height="22" rx="6" fill="#4A7C59"/>
+    <text x="488" y="223" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Send</text>
+  </g>
+</svg>

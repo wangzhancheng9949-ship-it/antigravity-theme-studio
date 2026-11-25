@@ -17,6 +17,8 @@ import {
   FALLBACK_LAUNCH_PORT,
   ensureStateDir,
   loadUserState,
+  resolveEffectiveThemeId,
+  loadCustomThemes,
   loadCustomWallpaperDataUrl,
   findAntigravityExecutable,
   findHansExecutable
@@ -30,7 +32,8 @@ import {
 const THEMES_PATH = path.join(PROJECT_ROOT, "themes", "themes.json");
 
 function loadThemes() {
-  return JSON.parse(fs.readFileSync(THEMES_PATH, "utf8")).themes;
+  const builtin = JSON.parse(fs.readFileSync(THEMES_PATH, "utf8")).themes;
+  return [...loadCustomThemes(), ...builtin];
 }
 
 async function discoverPages() {
@@ -176,7 +179,8 @@ async function main() {
   while (true) {
     try {
       const state = loadUserState();
-      if (!state.autoPersist || !state.activeThemeId) {
+      const targetThemeId = resolveEffectiveThemeId(state);
+      if (!state.autoPersist || !targetThemeId) {
         await new Promise((r) => setTimeout(r, 3000));
         continue;
       }
@@ -184,7 +188,6 @@ async function main() {
       const cdp = await discoverPages();
       if (!cdp.connected) {
         disconnectedTicks++;
-        // 启动宽限期 25 秒；若曾经连接过且客户端已退出超过 20 秒，则自动退出守护节省内存
         if ((everConnected && disconnectedTicks > 9) || (!everConnected && disconnectedTicks > 15)) {
           break;
         }
@@ -196,7 +199,7 @@ async function main() {
       disconnectedTicks = 0;
 
       const themes = loadThemes();
-      const theme = themes.find((t) => t.id === state.activeThemeId);
+      const theme = themes.find((t) => t.id === targetThemeId);
       if (theme) {
         const customWp = state.wallpaperId === "custom" ? loadCustomWallpaperDataUrl() : "";
         const sig = computeThemeSignature({

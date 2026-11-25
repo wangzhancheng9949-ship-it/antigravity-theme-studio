@@ -1,6 +1,14 @@
 # Antigravity Theme Studio
 
-简体中文 | [English](./README.en.md) · 🌐 **[在线预览主题画廊 (Live Gallery)](https://wangzhancheng9949-ship-it.github.io/antigravity-theme-studio/gallery/)** · 📦 **[下载最新免安装版 (Releases)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest)**
+[![Release](https://img.shields.io/github/v/release/wangzhancheng9949-ship-it/antigravity-theme-studio?color=7c6bf0)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-3b82f6)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
+
+简体中文 | [English](./README.en.md) · 🌐 **[在线预览与调色画廊 (Live Studio)](https://wangzhancheng9949-ship-it.github.io/antigravity-theme-studio/gallery/)** · 📦 **[下载最新免安装版 (Releases)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest)**
+
+<p align="center">
+  <img src="./assets/hero-showcase.svg" alt="Antigravity Theme Studio Showcase" width="100%" />
+</p>
 
 为 **Google Antigravity 2.0 桌面端** 打造的跨平台（Windows · macOS · Linux）可视化主题工坊、原生色阶重映射引擎与程序化纹理壁纸工具。
 
@@ -69,14 +77,22 @@ chmod +x start-studio.sh
 
 ---
 
+## v0.2 新增核心能力
+
+- **🎨 可视化自由调色器 + 实时对比度检测**：无需设计基础，拖动 3 个取色器（或点「随机灵感」）即可自动派生侧栏、卡片、代码块色阶，并实时计算 WCAG AA/AAA 可读性评分。
+- **🌗 昼夜定时自动切换**：自由设置白天与夜晚时段及对应主题（如白天自动用「羊皮书卷」护眼浅色，19:00 自动无感切为「赤陶暖炭」深色）。
+- **🔗 一键主题分享码 (`agy-theme://`)**：任何内置或自调主题均可一键复制短分享码，朋友粘贴进工坊即可 1 秒导入同款配色。
+
+---
+
 ## Roadmap
 
 - [x] 原生 CSS 变量曲线重映射引擎（深浅零割裂）
 - [x] 原创程序化 SVG 纹理与本地自定义图片壁纸（含浓度/模糊调节）
 - [x] Windows / macOS / Linux 三端启动器与重启自动保持守护
-- [ ] 可视化自由调色器与一键生成配对深/浅色板
-- [ ] 跟随日出日落自动切换深浅主题
-- [ ] 社区主题一键导入/导出分享码
+- [x] 可视化自由调色器与实时 WCAG 对比度检测
+- [x] 昼夜时段自动切换深浅主题
+- [x] 社区主题一键导入/导出分享码 (`agy-theme://v1/...`)
 
 ---
 

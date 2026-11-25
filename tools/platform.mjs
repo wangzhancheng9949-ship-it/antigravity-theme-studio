@@ -12,11 +12,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const PROJECT_ROOT = path.resolve(__dirname, "..");
 export const USER_STATE_DIR = path.join(os.homedir(), ".antigravity-themes");
 export const STATE_FILE = path.join(USER_STATE_DIR, "state.json");
+export const CUSTOM_THEMES_FILE = path.join(USER_STATE_DIR, "custom-themes.json");
 export const CUSTOM_WALLPAPER_FILE = path.join(USER_STATE_DIR, "custom-wallpaper.txt");
 export const DAEMON_LOCK_FILE = path.join(USER_STATE_DIR, "daemon.pid");
 
 export const CANDIDATE_CDP_PORTS = [58321, 58322, 58323, 58324, 58325, 9222, 9223];
 export const FALLBACK_LAUNCH_PORT = 58325;
+
+const HEX6_RE = /^#[0-9A-Fa-f]{6}$/;
 
 export function ensureStateDir() {
   fs.mkdirSync(USER_STATE_DIR, { recursive: true });
@@ -31,6 +34,11 @@ export function loadUserState() {
     wallpaperId: "none",
     wallpaperOpacity: 0.14,
     wallpaperBlur: 0,
+    scheduleEnabled: false,
+    dayStart: "07:30",
+    nightStart: "19:00",
+    dayThemeId: "editorial-parchment",
+    nightThemeId: "terracotta-charcoal",
     updatedAt: null
   };
   try {
@@ -39,6 +47,147 @@ export function loadUserState() {
   } catch {
     return defaults;
   }
+}
+
+export function resolveEffectiveThemeId(state, now = new Date()) {
+  if (!state.scheduleEnabled) {
+    return state.activeThemeId;
+  }
+  const toMin = (hhmm, fallback) => {
+    const m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || "").trim());
+    if (!m) return fallback;
+    const h = Math.min(23, Math.max(0, Number(m[1])));
+    const min = Math.min(59, Math.max(0, Number(m[2])));
+    return h * 60 + min;
+  };
+  const curMin = now.getHours() * 60 + now.getMinutes();
+  const dayMin = toMin(state.dayStart, 7 * 60 + 30);
+  const nightMin = toMin(state.nightStart, 19 * 60);
+  const isDay = dayMin <= nightMin
+    ? (curMin >= dayMin && curMin < nightMin)
+    : (curMin >= dayMin || curMin < nightMin);
+  return isDay ? (state.dayThemeId || state.activeThemeId) : (state.nightThemeId || state.activeThemeId);
+}
+
+/**
+ * 根据 3 个基础色自动派生完整的侧栏色、卡片色、代码块底色与深浅模式
+ */
+export function buildCustomThemeObject({ id, name, zhName, background, foreground, accent, glass = false, radius = "12px" }) {
+  if (!HEX6_RE.test(background) || !HEX6_RE.test(foreground) || !HEX6_RE.test(accent)) {
+    throw new Error("颜色值必须为 6 位标准 Hex（例如 #1E1E2E）");
+  }
+  const toRgb = (hex) => [
+    parseInt(hex.slice(1, 3), 16),
+    parseInt(hex.slice(3, 5), 16),
+    parseInt(hex.slice(5, 7), 16)
+  ];
+  const toHex = ([r, g, b]) =>
+    "#" + [r, g, b].map((x) => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, "0")).join("").toUpperCase();
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const lum = ([r, g, b]) => {
+    const f = (v) => {
+      const s = v / 255;
+      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  };
+
+  const bgRgb = toRgb(background);
+  const fgRgb = toRgb(foreground);
+  const isDark = lum(bgRgb) < 0.45;
+  const sidebarHex = toHex(isDark ? mix(bgRgb, [0, 0, 0], 0.22) : mix(bgRgb, fgRgb, 0.045));
+  const cardHex = toHex(isDark ? mix(bgRgb, fgRgb, 0.055) : mix(bgRgb, [255, 255, 255], 0.65));
+  const codeHex = toHex(isDark ? mix(bgRgb, [0, 0, 0], 0.28) : mix(bgRgb, fgRgb, 0.06));
+  const cleanName = String(zhName || name || "自定义主题").slice(0, 32).replace(/[<>]/g, "");
+  const cleanEn = String(name || cleanName).slice(0, 36).replace(/[<>]/g, "");
+  const safeId = (id || `custom-${Date.now().toString(36)}`).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40);
+
+  return {
+    id: safeId,
+    name: cleanEn,
+    zhName: cleanName,
+    mode: isDark ? "dark" : "light",
+    category: "user-custom",
+    license: "User Custom",
+    description: `自定义调色主题 (${background.toUpperCase()} / ${accent.toUpperCase()})`,
+    native: {
+      preset: isDark ? "Onyx" : "Everforest Light",
+      background: background.toUpperCase(),
+      foreground: foreground.toUpperCase(),
+      accent: accent.toUpperCase(),
+      contrast: "default",
+      font: "Google Sans",
+      fontSize: 14
+    },
+    enhanced: {
+      sidebarBg: sidebarHex,
+      cardBg: cardHex,
+      borderColor: isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.10)",
+      codeBg: codeHex,
+      radius: /^\d{1,2}px$/.test(String(radius)) ? String(radius) : "12px",
+      glass: Boolean(glass)
+    }
+  };
+}
+
+export function loadCustomThemes() {
+  ensureStateDir();
+  try {
+    if (!fs.existsSync(CUSTOM_THEMES_FILE)) return [];
+    const arr = JSON.parse(fs.readFileSync(CUSTOM_THEMES_FILE, "utf8"));
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCustomTheme(themeObj) {
+  const list = loadCustomThemes().filter((t) => t.id !== themeObj.id);
+  list.unshift(themeObj);
+  ensureStateDir();
+  fs.writeFileSync(CUSTOM_THEMES_FILE, JSON.stringify(list, null, 2), "utf8");
+  return list;
+}
+
+export function deleteCustomTheme(themeId) {
+  const list = loadCustomThemes().filter((t) => t.id !== themeId);
+  ensureStateDir();
+  fs.writeFileSync(CUSTOM_THEMES_FILE, JSON.stringify(list, null, 2), "utf8");
+  return list;
+}
+
+export function encodeThemeShareCode(t) {
+  const compact = {
+    v: 1,
+    n: t.name,
+    z: t.zhName,
+    b: t.native.background,
+    f: t.native.foreground,
+    a: t.native.accent,
+    g: Boolean(t.enhanced?.glass),
+    r: t.enhanced?.radius || "12px"
+  };
+  const b64 = Buffer.from(JSON.stringify(compact), "utf8").toString("base64url");
+  return `agy-theme://v1/${b64}`;
+}
+
+export function decodeThemeShareCode(code) {
+  const trimmed = String(code || "").trim();
+  const prefix = "agy-theme://v1/";
+  if (!trimmed.startsWith(prefix) || trimmed.length > 600) {
+    throw new Error("无效的主题分享码格式（应以 agy-theme://v1/ 开头）");
+  }
+  const raw = Buffer.from(trimmed.slice(prefix.length), "base64url").toString("utf8");
+  const data = JSON.parse(raw);
+  return buildCustomThemeObject({
+    name: data.n || "Shared Theme",
+    zhName: data.z || data.n || "导入的分享主题",
+    background: data.b,
+    foreground: data.f,
+    accent: data.a,
+    glass: Boolean(data.g),
+    radius: data.r || "12px"
+  });
 }
 
 export function saveUserState(patch) {

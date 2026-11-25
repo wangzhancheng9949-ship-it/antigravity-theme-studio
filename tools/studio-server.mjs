@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Antigravity Theme Studio Server v1.0 (Windows / macOS / Linux)
- * 监听 127.0.0.1:3399，零外部依赖，内置回环安全校验。
+ * Antigravity Theme Studio Server v0.2.0 (Windows / macOS / Linux)
+ * 支持：14 套内置主题 + 可视化自由调色器 + agy-theme:// 分享码导入导出 + 昼夜自动切换 + 壁纸系统
  */
 
 import http from "node:http";
@@ -13,6 +13,13 @@ import {
   CANDIDATE_CDP_PORTS,
   loadUserState,
   saveUserState,
+  resolveEffectiveThemeId,
+  buildCustomThemeObject,
+  loadCustomThemes,
+  saveCustomTheme,
+  deleteCustomTheme,
+  encodeThemeShareCode,
+  decodeThemeShareCode,
   loadCustomWallpaperDataUrl,
   saveCustomWallpaperDataUrl,
   openExternalUrl,
@@ -25,10 +32,12 @@ const GALLERY_PATH = path.join(PROJECT_ROOT, "gallery", "index.html");
 const RUNTIME_PATH = path.join(PROJECT_ROOT, "tools", "skin-runtime.js");
 const HOST = "127.0.0.1";
 const PORT = 3399;
-const MAX_BODY_BYTES = 12 * 1024 * 1024; // 允许最高 ~8MB 图片的 Base64 DataURL
+const MAX_BODY_BYTES = 12 * 1024 * 1024;
 
-function loadCatalog() {
-  return JSON.parse(fs.readFileSync(THEMES_PATH, "utf8"));
+function loadAllThemes() {
+  const builtin = JSON.parse(fs.readFileSync(THEMES_PATH, "utf8")).themes;
+  const custom = loadCustomThemes();
+  return [...custom, ...builtin];
 }
 
 async function loadRuntime() {
@@ -89,12 +98,41 @@ function evalInPage(wsUrl, expression) {
   });
 }
 
+async function applyThemeToRunningPages(theme, state) {
+  const cdp = await discoverAntigravityCDP();
+  if (!cdp.connected) {
+    return { connected: false, applied: 0, mappedVars: 0, port: null };
+  }
+  const customWp = state.wallpaperId === "custom" ? loadCustomWallpaperDataUrl() : "";
+  const { buildPageApplyExpression } = await loadRuntime();
+  const expr = buildPageApplyExpression({
+    theme,
+    enhanced: state.enhanced,
+    wallpaperId: state.wallpaperId,
+    wallpaperOpacity: state.wallpaperOpacity,
+    wallpaperBlur: state.wallpaperBlur,
+    customWallpaperDataUrl: customWp
+  });
+
+  let applied = 0;
+  let mappedVars = 0;
+  for (const page of cdp.pages) {
+    try {
+      const out = await evalInPage(page.webSocketDebuggerUrl, expr);
+      const val = out?.result?.value;
+      if (val?.mappedVars) mappedVars = Math.max(mappedVars, val.mappedVars);
+      applied++;
+    } catch {}
+  }
+  return { connected: true, applied, mappedVars, port: cdp.port };
+}
+
 async function readJsonBody(req) {
   let size = 0;
   const chunks = [];
   for await (const chunk of req) {
     size += chunk.length;
-    if (size > MAX_BODY_BYTES) throw new Error("文件过大（请上传 8MB 以内的图片）");
+    if (size > MAX_BODY_BYTES) throw new Error("请求数据过大（限制 8MB 以内）");
     chunks.push(chunk);
   }
   const raw = Buffer.concat(chunks).toString("utf8");
@@ -127,23 +165,65 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    if (req.method === "GET" && url.pathname === "/api/catalog") {
-      sendJson(res, 200, loadCatalog());
-      return;
-    }
-
     if (req.method === "GET" && url.pathname === "/api/status") {
       const cdp = await discoverAntigravityCDP();
       const state = loadUserState();
-      const hasCustomWallpaper = Boolean(loadCustomWallpaperDataUrl());
       sendJson(res, 200, {
-        version: "1.0.0",
+        version: "0.2.0",
         platform: process.platform,
         connected: cdp.connected,
         port: cdp.port,
         pageCount: cdp.pages.length,
         state,
-        hasCustomWallpaper
+        effectiveThemeId: resolveEffectiveThemeId(state),
+        customThemes: loadCustomThemes(),
+        hasCustomWallpaper: Boolean(loadCustomWallpaperDataUrl())
+      });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/custom-theme") {
+      const body = await readJsonBody(req);
+      const themeObj = body.shareCode
+        ? decodeThemeShareCode(body.shareCode)
+        : buildCustomThemeObject(body);
+      const customThemes = saveCustomTheme(themeObj);
+      const shareCode = encodeThemeShareCode(themeObj);
+      sendJson(res, 200, { ok: true, theme: themeObj, shareCode, customThemes });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/delete-custom-theme") {
+      const { themeId } = await readJsonBody(req);
+      const customThemes = deleteCustomTheme(themeId);
+      sendJson(res, 200, { ok: true, customThemes });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/schedule") {
+      const body = await readJsonBody(req);
+      const savedState = saveUserState({
+        scheduleEnabled: Boolean(body.scheduleEnabled),
+        dayStart: String(body.dayStart || "07:30"),
+        nightStart: String(body.nightStart || "19:00"),
+        dayThemeId: String(body.dayThemeId || "editorial-parchment"),
+        nightThemeId: String(body.nightThemeId || "terracotta-charcoal"),
+        autoPersist: true
+      });
+      ensureDaemonRunning();
+
+      const targetId = resolveEffectiveThemeId(savedState);
+      const allThemes = loadAllThemes();
+      const targetTheme = allThemes.find((t) => t.id === targetId);
+      let live = { connected: false };
+      if (targetTheme) {
+        live = await applyThemeToRunningPages(targetTheme, savedState);
+      }
+      sendJson(res, 200, {
+        ok: true,
+        state: savedState,
+        effectiveThemeName: targetTheme ? targetTheme.zhName : targetId,
+        ...live
       });
       return;
     }
@@ -171,8 +251,8 @@ const server = http.createServer(async (req, res) => {
         wallpaperBlur = 0
       } = body;
 
-      const { themes } = loadCatalog();
-      const theme = themes.find((t) => t.id === themeId);
+      const allThemes = loadAllThemes();
+      const theme = allThemes.find((t) => t.id === themeId);
       if (!theme) {
         sendJson(res, 404, { ok: false, error: `未找到主题 ${themeId}` });
         return;
@@ -180,6 +260,8 @@ const server = http.createServer(async (req, res) => {
 
       const savedState = saveUserState({
         activeThemeId: theme.id,
+        // 手动点选具体主题时，默认不强制覆盖定时配置，若用户开启了定时可按当前时段生效或暂时手动优先
+        scheduleEnabled: Boolean(body.keepSchedule ? loadUserState().scheduleEnabled : false),
         enhanced: Boolean(enhanced),
         autoPersist: Boolean(autoPersist),
         wallpaperId,
@@ -191,51 +273,28 @@ const server = http.createServer(async (req, res) => {
         ensureDaemonRunning();
       }
 
-      const cdp = await discoverAntigravityCDP();
-      if (!cdp.connected) {
+      const live = await applyThemeToRunningPages(theme, savedState);
+      if (!live.connected) {
         sendJson(res, 200, {
           ok: true,
           savedOnly: true,
-          message: "已保存主题配置；当前未检测到调试端口，点击「创建桌面主题启动图标」启动客户端即可自动生效。"
+          message: "已保存主题配置；点击「生成桌面启动器」打开客户端即可自动生效。"
         });
         return;
       }
 
-      const customWp = wallpaperId === "custom" ? loadCustomWallpaperDataUrl() : "";
-      const { buildPageApplyExpression } = await loadRuntime();
-      const expr = buildPageApplyExpression({
-        theme,
-        enhanced: savedState.enhanced,
-        wallpaperId: savedState.wallpaperId,
-        wallpaperOpacity: savedState.wallpaperOpacity,
-        wallpaperBlur: savedState.wallpaperBlur,
-        customWallpaperDataUrl: customWp
-      });
-
-      let applied = 0;
-      let mappedVars = 0;
-      for (const page of cdp.pages) {
-        try {
-          const out = await evalInPage(page.webSocketDebuggerUrl, expr);
-          const val = out?.result?.value;
-          if (val?.mappedVars) mappedVars = Math.max(mappedVars, val.mappedVars);
-          applied++;
-        } catch {}
-      }
-
       sendJson(res, 200, {
         ok: true,
-        applied,
-        mappedVars,
-        port: cdp.port,
+        ...live,
         themeName: theme.zhName,
+        shareCode: encodeThemeShareCode(theme),
         state: savedState
       });
       return;
     }
 
     if (req.method === "POST" && url.pathname === "/api/reset") {
-      saveUserState({ activeThemeId: null });
+      saveUserState({ activeThemeId: null, scheduleEnabled: false });
       const cdp = await discoverAntigravityCDP();
       if (cdp.connected) {
         const { buildPageResetExpression } = await loadRuntime();
@@ -265,7 +324,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404);
     res.end("Not Found");
   } catch (err) {
-    sendJson(res, 500, { ok: false, error: err.message || String(err) });
+    sendJson(res, 400, { ok: false, error: err.message || String(err) });
   }
 });
 
@@ -279,7 +338,7 @@ server.on("error", async (err) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Antigravity Theme Studio v1.0 running at http://${HOST}:${PORT}`);
+  console.log(`Antigravity Theme Studio v0.2.0 running at http://${HOST}:${PORT}`);
   if (!process.argv.includes("--no-open")) {
     openExternalUrl(`http://${HOST}:${PORT}`);
   }

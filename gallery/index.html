@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Antigravity Theme Studio — 跨平台主题工坊</title>
+  <title>Antigravity Theme Studio v0.2 — 跨平台可视化主题工坊</title>
   <style>
     :root {
       --page-bg: #0b0c10;
@@ -23,7 +23,7 @@
       flex-direction: column;
     }
     header {
-      padding: 15px 24px;
+      padding: 14px 24px;
       border-bottom: 1px solid var(--page-border);
       display: flex;
       align-items: center;
@@ -48,11 +48,11 @@
     .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .filter-group {
       display: flex; background: var(--page-panel); padding: 4px; border-radius: 10px;
-      border: 1px solid var(--page-border); gap: 4px;
+      border: 1px solid var(--page-border); gap: 4px; flex-wrap: wrap;
     }
     .filter-btn {
       background: transparent; border: none; color: var(--page-muted);
-      padding: 5px 11px; border-radius: 7px; font-size: 12.5px; cursor: pointer;
+      padding: 5px 10px; border-radius: 7px; font-size: 12.5px; cursor: pointer;
     }
     .filter-btn.active { background: #262936; color: #fff; font-weight: 600; }
     .filter-btn:hover:not(.active) { color: #fff; }
@@ -93,6 +93,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
+      position: relative;
     }
     .theme-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
     .theme-card.active {
@@ -106,15 +107,23 @@
       font-size: 11px; padding: 2px 7px; border-radius: 999px;
       background: rgba(255, 255, 255, 0.07); color: var(--page-muted); white-space: nowrap;
     }
-    .swatches { display: flex; align-items: center; gap: 6px; }
+    .badge.good { background: rgba(74, 222, 128, 0.14); color: #4ade80; }
+    .badge.warn { background: rgba(250, 204, 21, 0.16); color: #facc15; }
+    .swatches { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+    .swatch-group { display: flex; align-items: center; gap: 6px; }
     .swatch { width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.18); }
     .card-desc { font-size: 12px; color: var(--page-muted); line-height: 1.45; }
+    .del-custom-btn {
+      background: transparent; border: none; color: #ef4444; font-size: 11.5px;
+      cursor: pointer; opacity: 0.75; padding: 2px 6px;
+    }
+    .del-custom-btn:hover { opacity: 1; text-decoration: underline; }
 
     .preview-pane {
       padding: 20px 26px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       overflow-y: auto;
       max-height: calc(100vh - 67px);
     }
@@ -126,6 +135,7 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: 0 22px 54px rgba(0,0,0,0.48);
+      flex-shrink: 0;
     }
     .mock-wp-layer {
       position: absolute; inset: 0; pointer-events: none; z-index: 2;
@@ -140,7 +150,7 @@
     .mock-dots { display: flex; gap: 7px; }
     .mock-dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.75; }
     .mock-body {
-      display: grid; grid-template-columns: 200px 1fr; min-height: 340px;
+      display: grid; grid-template-columns: 200px 1fr; min-height: 310px;
       background: var(--m-bg); color: var(--m-fg);
     }
     .mock-sidebar {
@@ -149,13 +159,13 @@
     }
     .mock-nav-item { padding: 7px 10px; border-radius: var(--m-radius); font-size: 12px; opacity: 0.8; }
     .mock-nav-item.active { background: var(--m-card); opacity: 1; font-weight: 600; border: 1px solid var(--m-border); }
-    .mock-chat { padding: 18px 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
-    .mock-messages { display: flex; flex-direction: column; gap: 12px; }
+    .mock-chat { padding: 16px 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .mock-messages { display: flex; flex-direction: column; gap: 10px; }
     .mock-user-msg {
       align-self: flex-end; background: var(--m-card); border: 1px solid var(--m-border);
-      padding: 9px 13px; border-radius: var(--m-radius); font-size: 13px; max-width: 78%;
+      padding: 8px 13px; border-radius: var(--m-radius); font-size: 13px; max-width: 78%;
     }
-    .mock-ai-msg { display: flex; flex-direction: column; gap: 9px; font-size: 13px; line-height: 1.6; }
+    .mock-ai-msg { display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 1.55; }
     .mock-pill {
       display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 9px;
       border-radius: 999px; width: fit-content; font-weight: 600;
@@ -170,28 +180,28 @@
     .mock-code .cm { opacity: 0.52; }
     .mock-input-box {
       background: var(--m-card); border: 1px solid var(--m-border); border-radius: var(--m-radius);
-      padding: 9px 12px; display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;
     }
     .mock-send-btn {
       background: var(--m-accent); color: #fff; border: none; border-radius: 8px;
       padding: 5px 13px; font-size: 12px; font-weight: 600;
     }
 
-    .params-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+    .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 1180px) { .params-grid { grid-template-columns: 1fr; } }
 
     .panel-box {
       background: var(--page-panel); border: 1px solid var(--page-border);
-      border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
+      border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 11px;
     }
-    .panel-box h2 { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+    .panel-box h2 { font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .param-row {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      padding: 8px 11px; border-radius: 9px; background: rgba(255,255,255,0.025);
+      padding: 7px 11px; border-radius: 9px; background: rgba(255,255,255,0.025);
       border: 1px solid var(--page-border);
     }
     .param-label { font-size: 12.5px; color: var(--page-muted); }
-    .param-val { display: flex; align-items: center; gap: 9px; font-family: Consolas, monospace; font-size: 13px; }
+    .param-val { display: flex; align-items: center; gap: 8px; font-family: Consolas, monospace; font-size: 12.5px; }
     .color-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.22); }
     .copy-btn {
       background: #252836; color: #fff; border: 1px solid var(--page-border);
@@ -202,28 +212,45 @@
     .wp-chips { display: flex; flex-wrap: wrap; gap: 7px; }
     .wp-chip {
       background: #1d202b; color: var(--page-muted); border: 1px solid var(--page-border);
-      padding: 6px 11px; border-radius: 8px; font-size: 12px; cursor: pointer;
+      padding: 6px 10px; border-radius: 8px; font-size: 12px; cursor: pointer;
     }
     .wp-chip.active { background: rgba(124,107,240,0.2); color: #fff; border-color: var(--page-accent); font-weight: 600; }
 
     .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--page-muted); }
     .slider-row input[type="range"] { flex: 1; accent-color: var(--page-accent); cursor: pointer; }
 
-    .action-row { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 2px; }
+    .form-inline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .text-input, .select-input {
+      background: #1a1d27; color: #fff; border: 1px solid var(--page-border);
+      border-radius: 8px; padding: 7px 10px; font-size: 12.5px; outline: none;
+    }
+    .text-input:focus, .select-input:focus { border-color: var(--page-accent); }
+    .picker-group {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .picker-item {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--page-border);
+      border-radius: 9px; padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;
+    }
+    .picker-item input[type="color"] {
+      width: 28px; height: 24px; border: none; background: transparent; cursor: pointer;
+    }
+
+    .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
     .primary-btn {
       background: linear-gradient(135deg, #7c6bf0, #4f7df3); color: #fff; border: none;
-      padding: 10px 18px; border-radius: 9px; font-size: 13.5px; font-weight: 650; cursor: pointer;
+      padding: 9px 16px; border-radius: 9px; font-size: 13px; font-weight: 650; cursor: pointer;
     }
     .secondary-btn {
       background: #222532; color: #fff; border: 1px solid var(--page-border);
-      padding: 9px 14px; border-radius: 9px; font-size: 12.5px; cursor: pointer;
+      padding: 8px 13px; border-radius: 9px; font-size: 12.5px; cursor: pointer;
     }
     .primary-btn:hover { filter: brightness(1.08); }
     .secondary-btn:hover { background: #2c3040; }
 
     .persist-banner {
       background: rgba(124, 107, 240, 0.09); border: 1px solid rgba(124, 107, 240, 0.28);
-      border-radius: 10px; padding: 11px 13px; display: flex; align-items: center;
+      border-radius: 10px; padding: 10px 14px; display: flex; align-items: center;
       justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12.5px;
     }
 
@@ -233,7 +260,7 @@
       padding: 10px 16px; border-radius: 10px; font-size: 13px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.48);
       opacity: 0; transform: translateY(10px); pointer-events: none;
-      transition: all 0.2s ease; z-index: 100; max-width: 440px;
+      transition: all 0.2s ease; z-index: 100; max-width: 460px;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
   </style>
@@ -243,20 +270,21 @@
     <div class="brand">
       <div class="brand-logo">A</div>
       <div>
-        <h1>Antigravity Theme Studio</h1>
-        <p>Windows · macOS · Linux 跨平台主题工坊 · 零侵权原创色板与程序化纹理</p>
+        <h1>Antigravity Theme Studio <span style="font-size:11px;opacity:0.65;font-weight:500;">v0.2</span></h1>
+        <p>可视化调色工坊 · 昼夜定时护眼 · 主题分享码 · 零侵入跨平台</p>
       </div>
     </div>
     <div class="controls">
       <div class="filter-group" id="filters">
-        <button class="filter-btn active" data-filter="all">全部 (14)</button>
-        <button class="filter-btn" data-filter="dark">深色 (8)</button>
-        <button class="filter-btn" data-filter="light">浅色 (6)</button>
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="dark">深色</button>
+        <button class="filter-btn" data-filter="light">浅色</button>
+        <button class="filter-btn" data-filter="user-custom">我的自定义</button>
         <button class="filter-btn" data-filter="studio-original">工坊原创</button>
-        <button class="filter-btn" data-filter="open-source">MIT 开源经典</button>
+        <button class="filter-btn" data-filter="open-source">MIT 经典</button>
       </div>
       <button class="toggle-btn active" id="enhanceToggle">✨ 细节增强</button>
-      <button class="toggle-btn" id="liveResetBtn">↺ 恢复官方原版</button>
+      <button class="toggle-btn" id="liveResetBtn">↺ 恢复原版</button>
       <span class="badge" id="connStatus" style="padding:7px 11px;font-size:12px;">检测连接中…</span>
     </div>
   </header>
@@ -274,7 +302,7 @@
             <span class="mock-dot" style="background:#27c93f"></span>
           </div>
           <span id="mockTitle">Antigravity — Terracotta Charcoal</span>
-          <span style="opacity:0.55">v1.0 Cross-Platform</span>
+          <span style="opacity:0.55">v0.2 Studio</span>
         </div>
         <div class="mock-body">
           <div class="mock-sidebar">
@@ -282,11 +310,11 @@
             <div class="mock-nav-item">⚡ 自动化</div>
             <div class="mock-nav-item">🧩 自定义</div>
             <div class="mock-nav-item active" style="margin-top:8px;">Antigravity 主题工坊</div>
-            <div class="mock-nav-item">跨平台兼容与开源发布</div>
+            <div class="mock-nav-item">昼夜自动切换与分享</div>
           </div>
           <div class="mock-chat">
             <div class="mock-messages">
-              <div class="mock-user-msg">这套配色在深浅切换和长文代码阅读下的表现怎么样？</div>
+              <div class="mock-user-msg">能自己调色、生成分享码发给朋友，还能白天浅色晚上自动切深色吗？</div>
               <div class="mock-ai-msg">
                 <span class="mock-pill" id="mockBadge">✦ 赤陶暖炭 · MIT 原创色板</span>
                 <div id="mockDesc">温润低蓝光的暖炭灰底色搭配赤陶暖橘强调色，长时间深度阅读与写作极度舒适。</div>
@@ -303,24 +331,25 @@
 
       <div class="persist-banner">
         <div>
-          <strong>🚀 重启不掉皮肤（跨平台自动保持）</strong>
-          <div style="color:var(--page-muted);margin-top:2px;">点击右侧按钮生成「Antigravity 主题版」启动图标（自动兼容汉化，Win/macOS/Linux 通用），以后用它打开即可自动套用你最后选的主题与壁纸。</div>
+          <strong>🚀 重启自动保持 & 跨平台桌面启动器</strong>
+          <span style="color:var(--page-muted);margin-left:6px;">一键生成桌面图标（兼容汉化，Win/macOS/Linux 通用），启动即自动恢复你的主题、壁纸与昼夜日程。</span>
         </div>
         <button class="secondary-btn" id="createLauncherBtn" style="border-color:var(--page-accent);font-weight:600;">📌 生成桌面「Antigravity 主题版」启动器</button>
       </div>
 
       <div class="params-grid">
+        <!-- 面板 1：背景纹理 + 一键应用 + 分享码导出 -->
         <div class="panel-box">
           <h2>
-            <span>🖼️ 背景纹理与本地自定义壁纸（零版权风险）</span>
-            <span class="badge">实时叠加</span>
+            <span>🖼️ 背景纹理、自定义壁纸与实时换肤</span>
+            <span class="badge" id="modeBadge">深色主题</span>
           </h2>
           <div class="wp-chips" id="wpChips">
             <button class="wp-chip active" data-wp="none">纯色无纹理</button>
             <button class="wp-chip" data-wp="aurora-mesh">极光流体 (SVG)</button>
             <button class="wp-chip" data-wp="topo-lines">等高线微纹 (SVG)</button>
             <button class="wp-chip" data-wp="dot-matrix">极客点阵 (SVG)</button>
-            <button class="wp-chip" data-wp="custom" id="customWpChip">📁 选择本机图片…</button>
+            <button class="wp-chip" data-wp="custom">📁 选择本机图片…</button>
           </div>
           <input type="file" id="wpFileInput" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" />
 
@@ -333,43 +362,81 @@
             <input type="range" id="blurRange" min="0" max="20" value="0" />
           </div>
 
-          <div class="action-row" style="margin-top:6px;">
+          <div class="action-row" style="margin-top:4px;">
             <button class="primary-btn" id="liveApplyBtn">⚡ 一键实时换肤并保存</button>
-            <button class="secondary-btn" id="copyAllBtn">📋 复制原生参数</button>
+            <button class="secondary-btn" id="shareCurrentBtn">🔗 复制主题分享码</button>
           </div>
         </div>
 
+        <!-- 面板 2：可视化自由调色工坊 + 分享码导入 -->
         <div class="panel-box">
           <h2>
-            <span>原生外观 4 项参数（免工具手动备选）</span>
-            <span class="badge" id="modeBadge">深色主题</span>
+            <span>🎨 可视化自由调色器 & 分享码导入</span>
+            <span class="badge good" id="contrastBadge">对比度 12.1:1 · AAA</span>
+          </h2>
+          <div class="picker-group">
+            <label class="picker-item">
+              <span>背景色</span>
+              <input type="color" id="pickBg" value="#1F1E1D" />
+            </label>
+            <label class="picker-item">
+              <span>前景色</span>
+              <input type="color" id="pickFg" value="#ECEAE4" />
+            </label>
+            <label class="picker-item">
+              <span>强调色</span>
+              <input type="color" id="pickAccent" value="#D97757" />
+            </label>
+          </div>
+          <div class="form-inline">
+            <input type="text" class="text-input" id="customNameInput" placeholder="给你的新主题起个名字（如：赛博青霓）" style="flex:1;" />
+            <button class="secondary-btn" id="randomPaletteBtn" title="生成高对比度和谐随机灵感色">🎲 随机灵感</button>
+            <button class="primary-btn" id="saveCustomBtn">💾 保存并应用</button>
+          </div>
+          <div class="form-inline" style="margin-top:2px;">
+            <input type="text" class="text-input" id="importCodeInput" placeholder="粘贴朋友分享的 agy-theme://v1/... 一键导入" style="flex:1;" />
+            <button class="secondary-btn" id="importCodeBtn">📥 导入分享码</button>
+          </div>
+        </div>
+
+        <!-- 面板 3：昼夜定时自动切换 -->
+        <div class="panel-box">
+          <h2>
+            <span>🌗 昼夜自动切换（护眼日程守护）</span>
+            <span class="badge" id="scheduleStatusBadge">未开启</span>
+          </h2>
+          <div class="form-inline">
+            <span style="font-size:12.5px;color:var(--page-muted);width:68px;">☀️ 白天时段</span>
+            <input type="time" class="text-input" id="dayStartInput" value="07:30" />
+            <select class="select-input" id="dayThemeSelect" style="flex:1;"></select>
+          </div>
+          <div class="form-inline">
+            <span style="font-size:12.5px;color:var(--page-muted);width:68px;">🌙 夜晚时段</span>
+            <input type="time" class="text-input" id="nightStartInput" value="19:00" />
+            <select class="select-input" id="nightThemeSelect" style="flex:1;"></select>
+          </div>
+          <div class="action-row">
+            <button class="primary-btn" id="enableScheduleBtn">🕒 保存并开启昼夜自动切换</button>
+            <button class="secondary-btn" id="disableScheduleBtn">关闭定时</button>
+          </div>
+        </div>
+
+        <!-- 面板 4：官方原生 4 项参数（免工具备选） -->
+        <div class="panel-box">
+          <h2>
+            <span>原生外观 4 项参数（手动备选）</span>
+            <button class="copy-btn" id="copyAllBtn">📋 复制全部配方</button>
           </h2>
           <div class="param-row">
             <span class="param-label">预设基底 (Preset)</span>
             <div class="param-val"><strong id="valPreset">Onyx</strong></div>
           </div>
           <div class="param-row">
-            <span class="param-label">背景色 (Background)</span>
+            <span class="param-label">背景色 / 前景色 / 强调色</span>
             <div class="param-val">
-              <span class="color-dot" id="dotBg"></span>
-              <span id="valBg">#1F1E1D</span>
-              <button class="copy-btn" data-copy="bg">复制</button>
-            </div>
-          </div>
-          <div class="param-row">
-            <span class="param-label">前景色 (Foreground)</span>
-            <div class="param-val">
-              <span class="color-dot" id="dotFg"></span>
-              <span id="valFg">#ECEAE4</span>
-              <button class="copy-btn" data-copy="fg">复制</button>
-            </div>
-          </div>
-          <div class="param-row">
-            <span class="param-label">强调色 (Accent)</span>
-            <div class="param-val">
-              <span class="color-dot" id="dotAccent"></span>
-              <span id="valAccent">#D97757</span>
-              <button class="copy-btn" data-copy="accent">复制</button>
+              <span class="color-dot" id="dotBg"></span><span id="valBg">#1F1E1D</span><button class="copy-btn" data-copy="bg">复制</button>
+              <span class="color-dot" id="dotFg"></span><span id="valFg">#ECEAE4</span><button class="copy-btn" data-copy="fg">复制</button>
+              <span class="color-dot" id="dotAccent"></span><span id="valAccent">#D97757</span><button class="copy-btn" data-copy="accent">复制</button>
             </div>
           </div>
         </div>
@@ -749,8 +816,9 @@
 ];
     // EMBEDDED_THEMES_END
 
+    let customThemes = [];
     let currentFilter = 'all';
-    let currentTheme = THEMES[0];
+    let currentTheme = null;
     let enhancedEnabled = true;
     let wallpaperId = 'none';
     let wallpaperOpacity = 0.14;
@@ -762,6 +830,10 @@
     const mockWpLayer = document.getElementById('mockWpLayer');
     const toastEl = document.getElementById('toast');
 
+    function getAllThemes() {
+      return [...customThemes, ...THEMES];
+    }
+
     function showToast(msg) {
       toastEl.textContent = msg;
       toastEl.classList.add('show');
@@ -770,7 +842,77 @@
     }
 
     function copyText(text, label) {
-      navigator.clipboard.writeText(text).then(() => showToast(`已复制 ${label}: ${text}`));
+      navigator.clipboard.writeText(text).then(() => showToast(`已复制 ${label}`));
+    }
+
+    function hexToRgb(hex) {
+      const h = hex.replace('#', '');
+      return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+    }
+
+    function rgbLum([r,g,b]) {
+      const f = v => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055)/1.055, 2.4); };
+      return 0.2126*f(r) + 0.7152*f(g) + 0.0722*f(b);
+    }
+
+    function calcContrast(hex1, hex2) {
+      const l1 = rgbLum(hexToRgb(hex1));
+      const l2 = rgbLum(hexToRgb(hex2));
+      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    }
+
+    function buildClientThemeObject({ id, name, zhName, background, foreground, accent, glass = false }) {
+      const bgRgb = hexToRgb(background);
+      const fgRgb = hexToRgb(foreground);
+      const isDark = rgbLum(bgRgb) < 0.45;
+      const toHex = arr => '#' + arr.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2,'0')).join('').toUpperCase();
+      const mix = (a, b, t) => [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t];
+      return {
+        id: id || ('custom-' + Date.now().toString(36)),
+        name: name || zhName || 'Custom Theme',
+        zhName: zhName || name || '自定义主题',
+        mode: isDark ? 'dark' : 'light',
+        category: 'user-custom',
+        license: 'User Custom',
+        description: `自定义调色主题 (${background.toUpperCase()} / ${accent.toUpperCase()})`,
+        native: {
+          preset: isDark ? 'Onyx' : 'Everforest Light',
+          background: background.toUpperCase(),
+          foreground: foreground.toUpperCase(),
+          accent: accent.toUpperCase(),
+          contrast: 'default', font: 'Google Sans', fontSize: 14
+        },
+        enhanced: {
+          sidebarBg: toHex(isDark ? mix(bgRgb,[0,0,0],0.22) : mix(bgRgb,fgRgb,0.045)),
+          cardBg: toHex(isDark ? mix(bgRgb,fgRgb,0.055) : mix(bgRgb,[255,255,255],0.65)),
+          borderColor: isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)',
+          codeBg: toHex(isDark ? mix(bgRgb,[0,0,0],0.28) : mix(bgRgb,fgRgb,0.06)),
+          radius: '12px', glass: Boolean(glass)
+        }
+      };
+    }
+
+    function encodeShareCodeClient(t) {
+      const json = JSON.stringify({
+        v: 1, n: t.name, z: t.zhName,
+        b: t.native.background, f: t.native.foreground, a: t.native.accent,
+        g: Boolean(t.enhanced?.glass), r: t.enhanced?.radius || '12px'
+      });
+      const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      return `agy-theme://v1/${b64}`;
+    }
+
+    function decodeShareCodeClient(code) {
+      const prefix = 'agy-theme://v1/';
+      const trimmed = String(code || '').trim();
+      if (!trimmed.startsWith(prefix)) throw new Error('分享码需以 agy-theme://v1/ 开头');
+      let b64 = trimmed.slice(prefix.length).replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      const data = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      return buildClientThemeObject({
+        name: data.n, zhName: data.z,
+        background: data.b, foreground: data.f, accent: data.a, glass: data.g
+      });
     }
 
     function getProceduralPreviewUrl(wpId, accent, fg) {
@@ -787,12 +929,44 @@
       return '';
     }
 
+    function populateScheduleSelects(dayId, nightId) {
+      const all = getAllThemes();
+      const daySel = document.getElementById('dayThemeSelect');
+      const nightSel = document.getElementById('nightThemeSelect');
+      daySel.innerHTML = all.map(t => `<option value="${t.id}">${t.mode === 'light' ? '☀️' : '🌙'} ${t.zhName} (${t.name})</option>`).join('');
+      nightSel.innerHTML = daySel.innerHTML;
+      daySel.value = all.some(x => x.id === dayId) ? dayId : 'editorial-parchment';
+      nightSel.value = all.some(x => x.id === nightId) ? nightId : 'terracotta-charcoal';
+    }
+
+    function updateContrastBadge(bg, fg) {
+      const ratio = calcContrast(bg, fg);
+      const el = document.getElementById('contrastBadge');
+      const level = ratio >= 7 ? 'AAA 极佳' : (ratio >= 4.5 ? 'AA 清晰' : '偏低·建议拉大反差');
+      el.textContent = `对比度 ${ratio.toFixed(1)}:1 · ${level}`;
+      el.className = 'badge ' + (ratio >= 4.5 ? 'good' : 'warn');
+    }
+
+    function syncPickersFromTheme(t) {
+      document.getElementById('pickBg').value = t.native.background;
+      document.getElementById('pickFg').value = t.native.foreground;
+      document.getElementById('pickAccent').value = t.native.accent;
+      updateContrastBadge(t.native.background, t.native.foreground);
+    }
+
     function renderList() {
-      const filtered = THEMES.filter(t => {
+      const all = getAllThemes();
+      if (!currentTheme) currentTheme = all[0];
+      const filtered = all.filter(t => {
         if (currentFilter === 'all') return true;
         if (currentFilter === 'dark' || currentFilter === 'light') return t.mode === currentFilter;
         return t.category === currentFilter;
       });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div style="padding:20px;color:var(--page-muted);font-size:13px;text-align:center;">暂无此类主题，可在右侧调色工坊保存或导入分享码！</div>`;
+        return;
+      }
 
       listEl.innerHTML = filtered.map(t => `
         <div class="theme-card ${t.id === currentTheme.id ? 'active' : ''}" data-id="${t.id}">
@@ -804,26 +978,56 @@
             <span class="badge">${t.mode === 'dark' ? '深色' : '浅色'}</span>
           </div>
           <div class="swatches">
-            <span class="swatch" style="background:${t.native.background}"></span>
-            <span class="swatch" style="background:${t.native.foreground}"></span>
-            <span class="swatch" style="background:${t.native.accent}"></span>
-            <span class="swatch" style="background:${t.enhanced.sidebarBg}"></span>
+            <div class="swatch-group">
+              <span class="swatch" style="background:${t.native.background}"></span>
+              <span class="swatch" style="background:${t.native.foreground}"></span>
+              <span class="swatch" style="background:${t.native.accent}"></span>
+              <span class="swatch" style="background:${t.enhanced.sidebarBg}"></span>
+            </div>
+            ${t.category === 'user-custom' ? `<button class="del-custom-btn" data-del="${t.id}">删除</button>` : ''}
           </div>
           <div class="card-desc">${t.description}</div>
         </div>
       `).join('');
 
       listEl.querySelectorAll('.theme-card').forEach(el => {
-        el.addEventListener('click', () => {
-          currentTheme = THEMES.find(x => x.id === el.dataset.id);
+        el.addEventListener('click', (ev) => {
+          if (ev.target.dataset?.del) return;
+          currentTheme = getAllThemes().find(x => x.id === el.dataset.id);
+          syncPickersFromTheme(currentTheme);
           renderList();
           renderPreview();
+        });
+      });
+
+      listEl.querySelectorAll('.del-custom-btn').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+          ev.stopPropagation();
+          const delId = btn.dataset.del;
+          if (location.protocol.startsWith('http')) {
+            const res = await fetch('/api/delete-custom-theme', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ themeId: delId })
+            });
+            const data = await res.json();
+            if (data.ok) customThemes = data.customThemes;
+          } else {
+            customThemes = customThemes.filter(x => x.id !== delId);
+            localStorage.setItem('agy_studio_custom', JSON.stringify(customThemes));
+          }
+          if (currentTheme.id === delId) currentTheme = THEMES[0];
+          populateScheduleSelects(document.getElementById('dayThemeSelect').value, document.getElementById('nightThemeSelect').value);
+          renderList();
+          renderPreview();
+          showToast('已删除自定义主题');
         });
       });
     }
 
     function renderPreview() {
       const t = currentTheme;
+      if (!t) return;
       mockWindow.style.setProperty('--m-bg', t.native.background);
       mockWindow.style.setProperty('--m-fg', t.native.foreground);
       mockWindow.style.setProperty('--m-accent', t.native.accent);
@@ -860,9 +1064,8 @@
       document.getElementById('dotAccent').style.background = t.native.accent;
 
       document.getElementById('mockCode').innerHTML = `
-        <div><span class="cm">// 跨平台兼容 Windows · macOS · Linux | 重启自动保持</span></div>
-        <div><span class="kw">export const</span> activeTheme = <span class="kw">"${t.id}"</span>;</div>
-        <div><span class="kw">export const</span> wallpaper = <span class="kw">"${wallpaperId}"</span>;</div>
+        <div><span class="cm">// 支持分享码裂变传播 & 昼夜自动切换</span></div>
+        <div><span class="kw">const</span> share = <span class="kw">"${encodeShareCodeClient(t).slice(0, 42)}..."</span>;</div>
       `;
 
       document.querySelectorAll('#wpChips .wp-chip').forEach(c => {
@@ -871,8 +1074,8 @@
     }
 
     async function applyToClient() {
-      if (!location.protocol.startsWith('http')) {
-        showToast('当前为静态预览模式；运行本地启动脚本即可一键实时换肤！');
+      if (!location.protocol.startsWith('http') || location.hostname.endsWith('github.io')) {
+        showToast('当前为在线预览页；下载 Release 运行本地启动脚本即可一键实时换肤！');
         return;
       }
       try {
@@ -889,55 +1092,211 @@
           })
         });
         const data = await res.json();
-        if (!data.ok) {
-          showToast(`提示：${data.error}`);
-        } else if (data.savedOnly) {
-          showToast(data.message);
-        } else {
-          showToast(`⚡ 已实时生效并保存：${data.themeName}（已重映射 ${data.mappedVars} 项原生色阶）`);
+        if (!data.ok) showToast(`提示：${data.error}`);
+        else if (data.savedOnly) showToast(data.message);
+        else {
+          document.getElementById('scheduleStatusBadge').textContent = '手动固定中';
+          showToast(`⚡ 已实时生效并保存：${data.themeName}`);
         }
       } catch {
-        showToast('连接本地主题服务失败，请重新运行启动脚本');
+        showToast('连接本地服务失败，请重新运行启动脚本');
       }
     }
 
     async function initStudioState() {
       const badge = document.getElementById('connStatus');
-      if (!location.protocol.startsWith('http')) {
-        badge.textContent = '🌐 静态画廊预览模式';
+      const isOnlineStatic = !location.protocol.startsWith('http') || location.hostname.endsWith('github.io');
+      if (isOnlineStatic) {
+        badge.textContent = '🌐 在线静态预览模式（可自由调色与生成分享码）';
+        try { customThemes = JSON.parse(localStorage.getItem('agy_studio_custom') || '[]'); } catch {}
+        currentTheme = getAllThemes()[0];
+        populateScheduleSelects('editorial-parchment', 'terracotta-charcoal');
+        syncPickersFromTheme(currentTheme);
+        renderList();
+        renderPreview();
         return;
       }
       try {
         const res = await fetch('/api/status');
         const data = await res.json();
+        customThemes = data.customThemes || [];
         if (data.connected) {
-          badge.textContent = `🟢 已连接 Antigravity (${data.platform} · 端口 ${data.port})`;
+          badge.textContent = `🟢 已连接 Antigravity (${data.platform} · ${data.port})`;
           badge.style.color = '#4ade80';
         } else {
-          badge.textContent = `🟡 待连接客户端（可先点「生成桌面启动器」）`;
+          badge.textContent = `🟡 待连接客户端（可点「生成桌面启动器」）`;
           badge.style.color = '#facc15';
         }
-        if (data.state) {
-          if (data.state.activeThemeId) {
-            const found = THEMES.find(x => x.id === data.state.activeThemeId);
-            if (found) currentTheme = found;
-          }
-          enhancedEnabled = data.state.enhanced !== false;
-          document.getElementById('enhanceToggle').classList.toggle('active', enhancedEnabled);
-          wallpaperId = data.state.wallpaperId || 'none';
-          wallpaperOpacity = Number(data.state.wallpaperOpacity ?? 0.14);
-          wallpaperBlur = Number(data.state.wallpaperBlur ?? 0);
-          document.getElementById('opacityRange').value = Math.round(wallpaperOpacity * 100);
-          document.getElementById('valOpacity').textContent = `${Math.round(wallpaperOpacity * 100)}%`;
-          document.getElementById('blurRange').value = wallpaperBlur;
-          document.getElementById('valBlur').textContent = `${wallpaperBlur}px`;
-          renderList();
-          renderPreview();
+        const st = data.state || {};
+        populateScheduleSelects(st.dayThemeId, st.nightThemeId);
+        document.getElementById('dayStartInput').value = st.dayStart || '07:30';
+        document.getElementById('nightStartInput').value = st.nightStart || '19:00';
+        const schedBadge = document.getElementById('scheduleStatusBadge');
+        if (st.scheduleEnabled) {
+          schedBadge.textContent = `🟢 已开启 (${st.dayStart} / ${st.nightStart})`;
+          schedBadge.className = 'badge good';
         }
+
+        const targetId = data.effectiveThemeId || st.activeThemeId;
+        currentTheme = getAllThemes().find(x => x.id === targetId) || getAllThemes()[0];
+        enhancedEnabled = st.enhanced !== false;
+        document.getElementById('enhanceToggle').classList.toggle('active', enhancedEnabled);
+        wallpaperId = st.wallpaperId || 'none';
+        wallpaperOpacity = Number(st.wallpaperOpacity ?? 0.14);
+        wallpaperBlur = Number(st.wallpaperBlur ?? 0);
+        document.getElementById('opacityRange').value = Math.round(wallpaperOpacity * 100);
+        document.getElementById('valOpacity').textContent = `${Math.round(wallpaperOpacity * 100)}%`;
+        document.getElementById('blurRange').value = wallpaperBlur;
+        document.getElementById('valBlur').textContent = `${wallpaperBlur}px`;
+
+        syncPickersFromTheme(currentTheme);
+        renderList();
+        renderPreview();
       } catch {
         badge.textContent = '⚪ 本地服务未响应';
       }
     }
+
+    // 自由调色器实时预览
+    function onPickerLiveChange() {
+      const bg = document.getElementById('pickBg').value;
+      const fg = document.getElementById('pickFg').value;
+      const accent = document.getElementById('pickAccent').value;
+      const name = document.getElementById('customNameInput').value.trim() || '实时调色预览';
+      updateContrastBadge(bg, fg);
+      currentTheme = buildClientThemeObject({ id: '__preview__', name, zhName: name, background: bg, foreground: fg, accent });
+      renderPreview();
+    }
+    ['pickBg', 'pickFg', 'pickAccent'].forEach(id => {
+      document.getElementById(id).addEventListener('input', onPickerLiveChange);
+    });
+
+    document.getElementById('randomPaletteBtn').addEventListener('click', () => {
+      const presets = [
+        ['#141820', '#E6EDF3', '#58A6FF', '深海极光'],
+        ['#1C1917', '#F5F5F4', '#F59E0B', '琥珀黑金'],
+        ['#131B18', '#E2ECE7', '#34D399', '翡翠森夜'],
+        ['#F7F5F0', '#262320', '#9333EA', '暖宣紫韵'],
+        ['#F0F4F8', '#1E293B', '#0EA5E9', '冰川晴空'],
+        ['#1D1626', '#EDE9FE', '#F472B6', '霓虹暮紫']
+      ];
+      const pick = presets[Math.floor(Math.random() * presets.length)];
+      document.getElementById('pickBg').value = pick[0];
+      document.getElementById('pickFg').value = pick[1];
+      document.getElementById('pickAccent').value = pick[2];
+      document.getElementById('customNameInput').value = pick[3];
+      onPickerLiveChange();
+    });
+
+    document.getElementById('saveCustomBtn').addEventListener('click', async () => {
+      const bg = document.getElementById('pickBg').value;
+      const fg = document.getElementById('pickFg').value;
+      const accent = document.getElementById('pickAccent').value;
+      const zhName = document.getElementById('customNameInput').value.trim() || '我的自定义主题';
+      const isOnlineStatic = !location.protocol.startsWith('http') || location.hostname.endsWith('github.io');
+
+      if (isOnlineStatic) {
+        const obj = buildClientThemeObject({ name: zhName, zhName, background: bg, foreground: fg, accent });
+        customThemes = [obj, ...customThemes];
+        localStorage.setItem('agy_studio_custom', JSON.stringify(customThemes));
+        currentTheme = obj;
+        renderList();
+        renderPreview();
+        showToast(`💾 已保存到浏览器本地！点「复制主题分享码」即可分享`);
+        return;
+      }
+
+      const res = await fetch('/api/custom-theme', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: zhName, zhName, background: bg, foreground: fg, accent })
+      });
+      const data = await res.json();
+      if (!data.ok) { showToast(data.error || '保存失败'); return; }
+      customThemes = data.customThemes;
+      currentTheme = data.theme;
+      populateScheduleSelects(document.getElementById('dayThemeSelect').value, document.getElementById('nightThemeSelect').value);
+      renderList();
+      renderPreview();
+      await applyToClient();
+    });
+
+    document.getElementById('shareCurrentBtn').addEventListener('click', () => {
+      const code = encodeShareCodeClient(currentTheme);
+      copyText(code, `主题分享码 (${currentTheme.zhName})`);
+    });
+
+    document.getElementById('importCodeBtn').addEventListener('click', async () => {
+      const raw = document.getElementById('importCodeInput').value.trim();
+      if (!raw) { showToast('请先粘贴 agy-theme://v1/... 分享码'); return; }
+      const isOnlineStatic = !location.protocol.startsWith('http') || location.hostname.endsWith('github.io');
+      try {
+        if (isOnlineStatic) {
+          const obj = decodeShareCodeClient(raw);
+          customThemes = [obj, ...customThemes];
+          localStorage.setItem('agy_studio_custom', JSON.stringify(customThemes));
+          currentTheme = obj;
+          syncPickersFromTheme(obj);
+          renderList();
+          renderPreview();
+          document.getElementById('importCodeInput').value = '';
+          showToast(`📥 成功导入主题：${obj.zhName}`);
+          return;
+        }
+        const res = await fetch('/api/custom-theme', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ shareCode: raw })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error);
+        customThemes = data.customThemes;
+        currentTheme = data.theme;
+        document.getElementById('importCodeInput').value = '';
+        syncPickersFromTheme(currentTheme);
+        populateScheduleSelects(document.getElementById('dayThemeSelect').value, document.getElementById('nightThemeSelect').value);
+        renderList();
+        renderPreview();
+        await applyToClient();
+      } catch (e) {
+        showToast(`导入失败：${e.message}`);
+      }
+    });
+
+    // 昼夜自动切换设置
+    async function updateSchedule(enabled) {
+      if (!location.protocol.startsWith('http') || location.hostname.endsWith('github.io')) {
+        showToast('请下载本地版运行以启用后台昼夜定时守护');
+        return;
+      }
+      const payload = {
+        scheduleEnabled: enabled,
+        dayStart: document.getElementById('dayStartInput').value || '07:30',
+        nightStart: document.getElementById('nightStartInput').value || '19:00',
+        dayThemeId: document.getElementById('dayThemeSelect').value,
+        nightThemeId: document.getElementById('nightThemeSelect').value
+      };
+      const res = await fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const badge = document.getElementById('scheduleStatusBadge');
+        if (enabled) {
+          badge.textContent = `🟢 已开启 (${payload.dayStart} / ${payload.nightStart})`;
+          badge.className = 'badge good';
+          showToast(`🌗 已开启昼夜自动切换！当前时段生效：${data.effectiveThemeName}`);
+        } else {
+          badge.textContent = '未开启';
+          badge.className = 'badge';
+          showToast('已关闭昼夜定时切换');
+        }
+      }
+    }
+    document.getElementById('enableScheduleBtn').addEventListener('click', () => updateSchedule(true));
+    document.getElementById('disableScheduleBtn').addEventListener('click', () => updateSchedule(false));
 
     document.querySelectorAll('#filters .filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -957,10 +1316,7 @@
     document.querySelectorAll('#wpChips .wp-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         const wp = chip.dataset.wp;
-        if (wp === 'custom') {
-          document.getElementById('wpFileInput').click();
-          return;
-        }
+        if (wp === 'custom') { document.getElementById('wpFileInput').click(); return; }
         wallpaperId = wp;
         renderPreview();
       });
@@ -969,16 +1325,13 @@
     document.getElementById('wpFileInput').addEventListener('change', e => {
       const file = e.target.files?.[0];
       if (!file) return;
-      if (file.size > 8 * 1024 * 1024) {
-        showToast('请选择 8MB 以内的图片文件');
-        return;
-      }
+      if (file.size > 8 * 1024 * 1024) { showToast('请选择 8MB 以内的图片'); return; }
       const reader = new FileReader();
       reader.onload = async () => {
         customPreviewUrl = String(reader.result);
         wallpaperId = 'custom';
         renderPreview();
-        if (location.protocol.startsWith('http')) {
+        if (location.protocol.startsWith('http') && !location.hostname.endsWith('github.io')) {
           const res = await fetch('/api/wallpaper', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -986,7 +1339,6 @@
           });
           const data = await res.json();
           if (data.ok) applyToClient();
-          else showToast(data.error || '上传失败');
         }
       };
       reader.readAsDataURL(file);
@@ -997,43 +1349,41 @@
       document.getElementById('valOpacity').textContent = `${e.target.value}%`;
       renderPreview();
     });
-    document.getElementById('opacityRange').addEventListener('change', () => {
-      if (wallpaperId !== 'none') applyToClient();
-    });
+    document.getElementById('opacityRange').addEventListener('change', () => { if (wallpaperId !== 'none') applyToClient(); });
 
     document.getElementById('blurRange').addEventListener('input', e => {
       wallpaperBlur = Number(e.target.value);
       document.getElementById('valBlur').textContent = `${wallpaperBlur}px`;
       renderPreview();
     });
-    document.getElementById('blurRange').addEventListener('change', () => {
-      if (wallpaperId !== 'none') applyToClient();
+    document.getElementById('blurRange').addEventListener('change', () => { if (wallpaperId !== 'none') applyToClient(); });
+
+    document.getElementById('liveApplyBtn').addEventListener('click', async () => {
+      if (currentTheme.id === '__preview__') {
+        document.getElementById('saveCustomBtn').click();
+        return;
+      }
+      await applyToClient();
     });
 
-    document.getElementById('liveApplyBtn').addEventListener('click', applyToClient);
-
     document.getElementById('liveResetBtn').addEventListener('click', async () => {
-      if (!location.protocol.startsWith('http')) return;
+      if (!location.protocol.startsWith('http') || location.hostname.endsWith('github.io')) return;
       const res = await fetch('/api/reset', { method: 'POST' });
       const data = await res.json();
-      if (data.ok) showToast('↺ 已恢复官方原版样式，并清除自动挂载');
+      if (data.ok) showToast('↺ 已恢复官方原版样式');
     });
 
     document.getElementById('createLauncherBtn').addEventListener('click', async () => {
-      if (!location.protocol.startsWith('http')) {
-        showToast('请先通过本地启动脚本运行工坊服务');
+      if (!location.protocol.startsWith('http') || location.hostname.endsWith('github.io')) {
+        showToast('请下载本地版运行以创建桌面启动器');
         return;
       }
       const res = await fetch('/api/create-launcher', { method: 'POST' });
       const data = await res.json();
-      if (data.ok) {
-        showToast(`✅ 已创建跨平台启动器：${data.path}`);
-      } else {
-        showToast(`创建失败：${data.error}`);
-      }
+      if (data.ok) showToast(`✅ 已创建跨平台启动器：${data.path}`);
     });
 
-    document.querySelectorAll('.copy-btn').forEach(btn => {
+    document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
       btn.addEventListener('click', () => {
         const map = {
           bg: ['背景色', currentTheme.native.background.replace('#', '')],
@@ -1041,20 +1391,15 @@
           accent: ['强调色', currentTheme.native.accent.replace('#', '')]
         };
         const [label, val] = map[btn.dataset.copy];
-        copyText(val, label);
+        copyText(val, `${label}: ${val}`);
       });
     });
 
     document.getElementById('copyAllBtn').addEventListener('click', () => {
       const t = currentTheme;
-      copyText(
-        `${t.zhName} (${t.name}) | 预设:${t.native.preset} | 背景:${t.native.background.replace('#','')} | 前景:${t.native.foreground.replace('#','')} | 强调:${t.native.accent.replace('#','')}`,
-        '原生配方'
-      );
+      copyText(`${t.zhName} | 预设:${t.native.preset} | 背景:${t.native.background.replace('#','')} | 前景:${t.native.foreground.replace('#','')} | 强调:${t.native.accent.replace('#','')}`, '完整配方');
     });
 
-    renderList();
-    renderPreview();
     initStudioState();
   </script>
 </body>
