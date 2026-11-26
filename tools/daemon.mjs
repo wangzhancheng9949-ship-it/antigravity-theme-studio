@@ -17,6 +17,7 @@ import {
   FALLBACK_LAUNCH_PORT,
   ensureStateDir,
   loadUserState,
+  saveUserState,
   resolveEffectiveThemeId,
   loadCustomThemes,
   loadCustomWallpaperDataUrl,
@@ -218,6 +219,11 @@ async function main() {
             // 跳过空白过渡页或 about:blank
             if (!page.url || page.url === "about:blank") continue;
             const alreadyApplied = await evalInPage(page.webSocketDebuggerUrl, checkExpr);
+            if (alreadyApplied === "YIELDED") {
+              // 用户刚刚在 Antigravity 原生「设置 → 外观」中主动切换了官方主题，自动解除工坊接管并持久化
+              saveUserState({ activeThemeId: null, scheduleEnabled: false });
+              break;
+            }
             if (!alreadyApplied) {
               if (!applyExpr) {
                 applyExpr = buildPageApplyExpression({

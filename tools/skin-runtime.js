@@ -57,11 +57,12 @@ function buildProceduralSvgDataUrl(wallpaperId, accentHex, fgHex, isDark) {
 
 export function computeThemeSignature(options) {
   const { theme, enhanced = true, wallpaperId = "none", wallpaperOpacity = 0.14, wallpaperBlur = 0, customWallpaperLen = 0 } = options;
-  return `${theme.id}|${enhanced ? 1 : 0}|${wallpaperId}|${wallpaperOpacity}|${wallpaperBlur}|${customWallpaperLen}`;
+  return `v2.1|${theme.id}|${enhanced ? 1 : 0}|${wallpaperId}|${wallpaperOpacity}|${wallpaperBlur}|${customWallpaperLen}`;
 }
 
 export function buildCheckSignatureExpression(expectedSig) {
   return `(() => {
+    if (window.__agyYieldedToNative) return "YIELDED";
     const el = document.getElementById("antigravity-theme-studio-v2");
     return Boolean(el && el.getAttribute("data-sig") === ${JSON.stringify(expectedSig)});
   })()`;
@@ -119,6 +120,14 @@ export function buildPageApplyExpression(options) {
     const { theme, enhanced, sig, resolvedWallpaperUrl, wallpaperOpacity, wallpaperBlur, bgRepeat, bgSize } = ${payload};
     const STYLE_ID = "antigravity-theme-studio-v2";
     const LEGACY_IDS = ["antigravity-pro-skin-v1", STYLE_ID];
+
+    // 用户从主题工坊主动应用新主题时，重置原生礼让标记并暂停旧观察器
+    window.__agyYieldedToNative = false;
+    window.__agyApplyingLock = true;
+    if (window.__agyNativeYieldObserver) {
+      try { window.__agyNativeYieldObserver.disconnect(); } catch {}
+      window.__agyNativeYieldObserver = null;
+    }
 
     for (const id of LEGACY_IDS) {
       const old = document.getElementById(id);
@@ -390,6 +399,106 @@ export function buildPageApplyExpression(options) {
     styleEl.setAttribute("data-sig", sig);
     styleEl.textContent = cssText;
     document.head.appendChild(styleEl);
+
+    // 安装「原生外观设置自动礼让监听器」：
+    // 一旦用户在 Antigravity 自带「设置 → 外观」中切换深浅模式、更换预设或修改颜色，
+    // 立即自动卸载工坊覆盖层，将控制权无缝归还给官方原生主题系统，绝不锁死原生设置！
+    const yieldToNative = () => {
+      if (window.__agyApplyingLock) return;
+      window.__agyYieldedToNative = true;
+      const cur = document.getElementById(STYLE_ID);
+      if (cur) cur.remove();
+      if (window.__agyNativeYieldObserver) {
+        try { window.__agyNativeYieldObserver.disconnect(); } catch {}
+        window.__agyNativeYieldObserver = null;
+      }
+      // 清空旧基准快照，以便下次重新启用工坊时按最新官方主题重新采样
+      window.__agyBaseSnapshot = null;
+    };
+
+    // Track recent user pointer/keyboard interaction to avoid false positives from background sync
+    if (!window.__agyInteractionHooked) {
+      window.__agyInteractionHooked = true;
+      window.__agyLastUserInputAt = 0;
+      const markInput = () => { window.__agyLastUserInputAt = Date.now(); };
+      window.addEventListener("pointerdown", markInput, true);
+      window.addEventListener("keydown", markInput, true);
+
+      try {
+        const proto = Object.getPrototypeOf(window.localStorage);
+        if (proto && !proto.__agyThemeYieldHooked) {
+          const origSetItem = proto.setItem;
+          Object.defineProperty(proto, "__agyThemeYieldHooked", { value: true });
+          proto.setItem = function(k, v) {
+            origSetItem.call(this, k, v);
+            if (
+              this === window.localStorage &&
+              !window.__agyApplyingLock &&
+              Date.now() - (window.__agyLastUserInputAt || 0) < 2500 &&
+              /theme|preset|color-scheme/i.test(String(k)) &&
+              !String(k).startsWith("agy_studio_")
+            ) {
+              yieldToNative();
+            }
+          };
+        }
+      } catch {}
+
+      // 精准识别用户在官方「设置 → 外观」面板中点击内置预设选项或官方三色输入框的操作
+      window.addEventListener("click", (ev) => {
+        if (window.__agyApplyingLock) return;
+        const el = ev.target && ev.target.closest ? ev.target.closest('[role="option"], [role="menuitemradio"], button') : null;
+        if (!el) return;
+        const txt = (el.textContent || "").trim();
+        const officialPresets = /^(Onyx|Nord|Vesper|Darcula|Legacy Light|Legacy Dark|Everforest Light|Everforest Dark|Gruvbox Material)$/i;
+        if (officialPresets.test(txt)) {
+          yieldToNative();
+        }
+      }, true);
+
+      window.addEventListener("input", (ev) => {
+        if (window.__agyApplyingLock) return;
+        const t = ev.target;
+        if (t && t.tagName === "INPUT" && t.closest && t.closest('[role="dialog"]')) {
+          const val = String(t.value || "").trim();
+          if (/^#?[0-9A-Fa-f]{6}$/.test(val)) {
+            yieldToNative();
+          }
+        }
+      }, true);
+    }
+
+    setTimeout(() => {
+      window.__agyApplyingLock = false;
+      const getInlineColorKey = () => [
+        root.style.getPropertyValue("--background"),
+        root.style.getPropertyValue("--foreground"),
+        root.style.getPropertyValue("--primary"),
+        root.style.getPropertyValue("--accent")
+      ].join("|");
+
+      const rootAttrSnap = {
+        cls: root.className,
+        dt: root.getAttribute("data-theme"),
+        colors: getInlineColorKey()
+      };
+      const obs = new MutationObserver(() => {
+        if (window.__agyApplyingLock) return;
+        const nextColors = getInlineColorKey();
+        const themeChanged =
+          root.className !== rootAttrSnap.cls ||
+          root.getAttribute("data-theme") !== rootAttrSnap.dt ||
+          nextColors !== rootAttrSnap.colors;
+        rootAttrSnap.cls = root.className;
+        rootAttrSnap.dt = root.getAttribute("data-theme");
+        rootAttrSnap.colors = nextColors;
+        if (themeChanged && Date.now() - (window.__agyLastUserInputAt || 0) < 2500) {
+          yieldToNative();
+        }
+      });
+      obs.observe(root, { attributes: true, attributeFilter: ["class", "data-theme", "style"] });
+      window.__agyNativeYieldObserver = obs;
+    }, 350);
 
     return { ok: true, mappedVars: mappedLines.length, sig };
   })()`;
