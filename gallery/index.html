@@ -270,8 +270,8 @@
     <div class="brand">
       <div class="brand-logo">A</div>
       <div>
-        <h1>Antigravity Theme Studio <span style="font-size:11px;opacity:0.65;font-weight:500;">v0.2</span></h1>
-        <p>可视化调色工坊 · 昼夜定时护眼 · 主题分享码 · 零侵入跨平台</p>
+        <h1>Antigravity Theme Studio <span id="verTag" style="font-size:11px;opacity:0.65;font-weight:500;">v0.3</span></h1>
+        <p>可视化调色工坊 · 昼夜定时护眼 · 主题分享码 · 一键热更新</p>
       </div>
     </div>
     <div class="controls">
@@ -285,6 +285,7 @@
       </div>
       <button class="toggle-btn active" id="enhanceToggle">✨ 细节增强</button>
       <button class="toggle-btn" id="liveResetBtn">↺ 恢复原版</button>
+      <button class="toggle-btn" id="updateBtn" title="检查 GitHub 最新版本并支持一键无损热更新">🔄 检查更新</button>
       <span class="badge" id="connStatus" style="padding:7px 11px;font-size:12px;">检测连接中…</span>
     </div>
   </header>
@@ -1119,7 +1120,11 @@
       try {
         const res = await fetch('/api/status');
         const data = await res.json();
+        if (data.version) {
+          document.getElementById('verTag').textContent = `v${data.version}`;
+        }
         customThemes = data.customThemes || [];
+        checkAppUpdate(true);
         if (data.connected) {
           badge.textContent = `🟢 已连接 Antigravity (${data.platform} · ${data.port})`;
           badge.style.color = '#4ade80';
@@ -1398,6 +1403,70 @@
     document.getElementById('copyAllBtn').addEventListener('click', () => {
       const t = currentTheme;
       copyText(`${t.zhName} | 预设:${t.native.preset} | 背景:${t.native.background.replace('#','')} | 前景:${t.native.foreground.replace('#','')} | 强调:${t.native.accent.replace('#','')}`, '完整配方');
+    });
+
+    let latestUpdateInfo = null;
+
+    async function checkAppUpdate(silent = false) {
+      const btn = document.getElementById('updateBtn');
+      const isOnlineStatic = !location.protocol.startsWith('http') || location.hostname.endsWith('github.io');
+      if (isOnlineStatic) {
+        if (!silent) window.open('https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest', '_blank');
+        return;
+      }
+      if (!silent) btn.textContent = '⏳ 检查中…';
+      try {
+        const res = await fetch('/api/check-update');
+        const data = await res.json();
+        latestUpdateInfo = data;
+        if (!data.ok) {
+          btn.textContent = '🔄 检查更新';
+          if (!silent) showToast(`检查更新失败：${data.error}`);
+          return;
+        }
+        if (data.hasUpdate) {
+          btn.textContent = `⬆️ 更新至 v${data.latestVersion}`;
+          btn.classList.add('active');
+          if (!silent) showToast(`发现新版本 v${data.latestVersion}！再次点击按钮即可一键热更新`);
+        } else {
+          btn.textContent = `✓ v${data.currentVersion} 最新`;
+          btn.classList.remove('active');
+          if (!silent) showToast(`当前已是最新版本 (v${data.currentVersion})`);
+        }
+      } catch {
+        btn.textContent = '🔄 检查更新';
+        if (!silent) showToast('检查更新请求失败');
+      }
+    }
+
+    document.getElementById('updateBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('updateBtn');
+      const isOnlineStatic = !location.protocol.startsWith('http') || location.hostname.endsWith('github.io');
+      if (isOnlineStatic) {
+        window.open('https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest', '_blank');
+        return;
+      }
+      if (latestUpdateInfo && latestUpdateInfo.hasUpdate) {
+        btn.textContent = '⏳ 正在更新…';
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/update', { method: 'POST' });
+          const data = await res.json();
+          if (data.ok && data.updated) {
+            showToast(`✅ 已无损升级至 v${data.to}！2 秒后自动刷新工坊…`);
+            setTimeout(() => location.reload(), 2000);
+          } else {
+            showToast(data.error || '当前已是最新');
+            btn.disabled = false;
+            checkAppUpdate(true);
+          }
+        } catch {
+          showToast('更新请求中断，请刷新页面重试');
+          btn.disabled = false;
+        }
+      } else {
+        await checkAppUpdate(false);
+      }
     });
 
     initStudioState();

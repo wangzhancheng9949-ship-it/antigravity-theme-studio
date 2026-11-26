@@ -14,6 +14,8 @@ A cross-platform (**Windows · macOS · Linux**) visual theme studio, native CSS
 
 - **Non-Intrusive & Update-Proof**: Never modifies `app.asar` or application binaries, preserving official macOS / Windows code signatures across auto-updates.
 - **Native-Grade CSS Variable Remapping**: Dynamically maps every native CSS color token along a perceptual luminance curve—seamless dark/light transitions without broken syntax/diff colors.
+- **1-Click In-App Updater (`v0.3`)**: Automatically checks GitHub Releases and updates via fast-forward `git pull` or official Release zip extraction without touching user data in `~/.antigravity-themes/`.
+- **Smart Native Settings Yield (`v0.2.1`)**: Switching built-in presets or light/dark mode inside Antigravity's native Appearance dialog automatically yields control without locking native settings.
 - **Visual Color Mixer & Share Codes (`v0.2`)**: Craft custom palettes with live WCAG contrast scoring and share/import any theme via compact `agy-theme://v1/...` codes.
 - **Auto Day/Night Schedule (`v0.2`)**: Automatically switch between your favorite light and dark themes on your custom schedule.
 - **Persistent Across Restarts**: Lightweight background daemon and one-click launcher generator for Windows (`.lnk`), macOS (`.app`), and Linux (`.desktop`).

@@ -26,6 +26,12 @@ import {
   ensureDaemonRunning,
   createCrossPlatformLauncher
 } from "./platform.mjs";
+import {
+  getLocalVersion,
+  checkForUpdate,
+  performSelfUpdate,
+  scheduleServerRestart
+} from "./updater.mjs";
 
 const THEMES_PATH = path.join(PROJECT_ROOT, "themes", "themes.json");
 const GALLERY_PATH = path.join(PROJECT_ROOT, "gallery", "index.html");
@@ -169,7 +175,7 @@ const server = http.createServer(async (req, res) => {
       const cdp = await discoverAntigravityCDP();
       const state = loadUserState();
       sendJson(res, 200, {
-        version: "0.2.0",
+        version: getLocalVersion(),
         platform: process.platform,
         connected: cdp.connected,
         port: cdp.port,
@@ -179,6 +185,22 @@ const server = http.createServer(async (req, res) => {
         customThemes: loadCustomThemes(),
         hasCustomWallpaper: Boolean(loadCustomWallpaperDataUrl())
       });
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname === "/api/check-update") {
+      const info = await checkForUpdate();
+      sendJson(res, 200, info);
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/update") {
+      const result = await performSelfUpdate();
+      sendJson(res, 200, { ok: true, ...result });
+      if (result.updated) {
+        server.close(() => {});
+        scheduleServerRestart();
+      }
       return;
     }
 

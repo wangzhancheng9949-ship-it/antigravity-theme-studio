@@ -1,6 +1,6 @@
 {
   "name": "antigravity-themes",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": false,
   "type": "module",
   "description": "Cross-platform visual theme studio, native CSS variable remapper, and procedural wallpapers for Google Antigravity 2.0.",
