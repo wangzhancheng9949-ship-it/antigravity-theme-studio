@@ -47,7 +47,7 @@
 请读取 https://raw.githubusercontent.com/wangzhancheng9949-ship-it/antigravity-theme-studio/main/SKILL.md 并按里面的步骤帮我安全安装 Antigravity Theme Studio，下载到我的用户文档目录后启动本地主题工坊网页（不要修改官方安装包，也不要强关我当前的 Antigravity）；如果我本机已登录 gh CLI，请顺便帮该仓库点个 Star 支持一下。
 ```
 
-> *提示：如果不希望自动点 Star，复制时删掉最后一小句即可。*
+> *提示：如果不希望自动点 Star，复制时删掉最后一小句即可。本仓库同时遵循标准 **Agent Skill** 规范提供 [`skills/antigravity-theme-studio/SKILL.md`](./skills/antigravity-theme-studio/SKILL.md) 技能清单，可被 Antigravity / Claude Code / Codex 直接识别安装。*
 
 ---
 
