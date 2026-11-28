@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "updatedAt": "2026-11-25",
+  "schemaVersion": 3,
+  "updatedAt": "2026-11-28",
   "themes": [
     {
       "id": "terracotta-charcoal",
@@ -10,6 +10,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "温润低蓝光的暖炭灰底色搭配赤陶暖橘强调色，长时间深度阅读与写作极度舒适。",
+      "enDescription": "Low-blue-light warm charcoal paired with terracotta orange accents for effortless long-form reading.",
       "native": {
         "preset": "Onyx",
         "background": "#1F1E1D",
@@ -36,6 +37,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "近乎黑曜石的深空底色叠加高级靛蓝紫微光，现代极客效率美学。",
+      "enDescription": "Deep obsidian canvas accented with crisp indigo-violet highlights.",
       "native": {
         "preset": "Vesper",
         "background": "#0F1014",
@@ -62,6 +64,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "极简冷黑基底配电光钴蓝强调色，层次锐利干练，代码与工具调用一目了然。",
+      "enDescription": "Crisp cool-black workspace with electric cobalt accents for sharp code clarity.",
       "native": {
         "preset": "Onyx",
         "background": "#121316",
@@ -88,6 +91,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "沉稳冷石墨灰与克制的珊瑚红点缀，暗夜质感十足又不显得刺眼。",
+      "enDescription": "Refined cool graphite balanced with warm coral highlights.",
       "native": {
         "preset": "Onyx",
         "background": "#141417",
@@ -107,6 +111,60 @@
       }
     },
     {
+      "id": "emerald-matrix",
+      "name": "Emerald Matrix",
+      "zhName": "翡翠矩阵",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "深邃墨绿碳黑底色配清透翡翠绿荧光，极客终端氛围拉满且清晰护眼。",
+      "enDescription": "Deep forest-carbon dark mode with luminous emerald terminal accents.",
+      "native": {
+        "preset": "Everforest Dark",
+        "background": "#0D1311",
+        "foreground": "#D8ECE3",
+        "accent": "#10B981",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#090E0C",
+        "cardBg": "#141D1A",
+        "borderColor": "rgba(16, 185, 129, 0.18)",
+        "codeBg": "#080C0B",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "oled-pitch-amber",
+      "name": "OLED Pitch Amber",
+      "zhName": "纯黑流金 · OLED",
+      "mode": "dark",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "专为 OLED / MiniLED 屏幕调校的真纯黑底色与琥珀流金高光，纯净深邃。",
+      "enDescription": "True pitch-black canvas crafted for OLED/MiniLED displays with warm amber gold accents.",
+      "native": {
+        "preset": "Onyx",
+        "background": "#050506",
+        "foreground": "#E6E6E8",
+        "accent": "#F59E0B",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#000000",
+        "cardBg": "#111114",
+        "borderColor": "rgba(245, 158, 11, 0.20)",
+        "codeBg": "#09090B",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
       "id": "catppuccin-mocha",
       "name": "Catppuccin Mocha",
       "zhName": "猫布奇诺 · 摩卡",
@@ -114,6 +172,7 @@
       "category": "open-source",
       "license": "MIT (Catppuccin)",
       "description": "开源社区高人气莫兰迪柔和暗色，薰衣草紫强调色优雅治愈，久看不腻。",
+      "enDescription": "Beloved soothing pastel dark theme with soft lavender accents.",
       "native": {
         "preset": "Nord",
         "background": "#1E1E2E",
@@ -140,6 +199,7 @@
       "category": "open-source",
       "license": "MIT (Tokyo Night)",
       "description": "深靛蓝夜空背景与霓虹天蓝点缀，极具现代科技感与沉浸感。",
+      "enDescription": "Clean deep-indigo night sky palette inspired by downtown Tokyo neon lights.",
       "native": {
         "preset": "Nord",
         "background": "#1A1B26",
@@ -159,6 +219,114 @@
       }
     },
     {
+      "id": "dracula-velvet",
+      "name": "Dracula Velvet",
+      "zhName": "德古拉 · 丝绒暗紫",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Dracula)",
+      "description": "全球开发者熟知的经典暗紫石板灰底色与丝绒亮紫点缀，对比鲜明饱满。",
+      "enDescription": "Iconic dark slate-purple palette with vibrant orchid-purple highlights.",
+      "native": {
+        "preset": "Vesper",
+        "background": "#282A36",
+        "foreground": "#F8F8F2",
+        "accent": "#BD93F9",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#21222C",
+        "cardBg": "#313442",
+        "borderColor": "rgba(189, 147, 249, 0.18)",
+        "codeBg": "#1E1F29",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
+      "id": "gruvbox-espresso",
+      "name": "Gruvbox Espresso",
+      "zhName": "复古浓缩 · 暖褐",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Gruvbox)",
+      "description": "硬核复古暖黑底色搭配奶油米黄文字与落日橙高光，夜间码字极度护眼。",
+      "enDescription": "Retro warm-groove dark palette with cream ink and burnt-orange accents.",
+      "native": {
+        "preset": "Gruvbox Material",
+        "background": "#1D2021",
+        "foreground": "#EBDBB2",
+        "accent": "#FE8019",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#17191A",
+        "cardBg": "#282828",
+        "borderColor": "rgba(235, 219, 178, 0.12)",
+        "codeBg": "#161819",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
+      "id": "ayu-mirage",
+      "name": "Ayu Mirage",
+      "zhName": "蜃景深海 · 暖金",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Ayu)",
+      "description": "静谧深海蓝灰背景与柔和暖日金强调色碰撞，优雅克制、现代感极强。",
+      "enDescription": "Serene deep-sea slate paired with warm sunlit gold accents.",
+      "native": {
+        "preset": "Nord",
+        "background": "#1F2430",
+        "foreground": "#CCCAC2",
+        "accent": "#FFCC66",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#191E2A",
+        "cardBg": "#272D3C",
+        "borderColor": "rgba(255, 204, 102, 0.16)",
+        "codeBg": "#171B24",
+        "radius": "12px",
+        "glass": true
+      }
+    },
+    {
+      "id": "nordic-frost",
+      "name": "Nordic Frost",
+      "zhName": "极地冰川 · 霜青",
+      "mode": "dark",
+      "category": "open-source",
+      "license": "MIT (Nord)",
+      "description": "源自北极极夜的柔和冷灰蓝与冰霜青强调色，低对比度专注沉浸。",
+      "enDescription": "Arctic polar-night slate blue with calm frost-cyan accents.",
+      "native": {
+        "preset": "Nord",
+        "background": "#2E3440",
+        "foreground": "#ECEFF4",
+        "accent": "#88C0D0",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#272C36",
+        "cardBg": "#3B4252",
+        "borderColor": "rgba(136, 192, 208, 0.18)",
+        "codeBg": "#242933",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
       "id": "rose-pine",
       "name": "Rosé Pine",
       "zhName": "玫瑰松 · 暗夜",
@@ -166,6 +334,7 @@
       "category": "open-source",
       "license": "MIT (Rosé Pine)",
       "description": "低饱和度紫黑底色配柔雾玫瑰金强调色，文艺温柔、辨识度极高。",
+      "enDescription": "Soho vibes dark pine and muted violet paired with dusty rose gold.",
       "native": {
         "preset": "Vesper",
         "background": "#191724",
@@ -192,6 +361,7 @@
       "category": "open-source",
       "license": "MIT (Kanagawa)",
       "description": "墨青深海底色与和纸米黄文字，温润古雅，非常护眼。",
+      "enDescription": "Ukiyo-e inspired sumi-ink navy with warm old-paper foreground tones.",
       "native": {
         "preset": "Everforest Dark",
         "background": "#1F1F28",
@@ -218,6 +388,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "温润柔和的书本暖纸白搭配赤陶棕强调色，告别惨白刺眼，长文阅读首选。",
+      "enDescription": "Warm book-paper cream paired with terracotta ink—zero harsh white glare.",
       "native": {
         "preset": "Everforest Light",
         "background": "#F5F4EE",
@@ -244,6 +415,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "干净克制的现代极简文档风，柔和暖灰文字配晴空蓝强调色，清爽利落。",
+      "enDescription": "Clean minimalist document workspace with warm charcoal ink and sky blue accents.",
       "native": {
         "preset": "Legacy Light",
         "background": "#FBFBFA",
@@ -270,6 +442,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "通透冷调银白与清澈钴蓝高光，配合微毛玻璃质感尤其精致。",
+      "enDescription": "Translucent cool silver-white with crisp azure highlights and subtle glassmorphism.",
       "native": {
         "preset": "Legacy Light",
         "background": "#F5F5F7",
@@ -296,6 +469,7 @@
       "category": "studio-original",
       "license": "MIT (Original)",
       "description": "极淡豆沙抹茶绿底色与深松针绿文字，全天候深度阅读的森系护眼方案。",
+      "enDescription": "Botanical matcha washi paper tone with deep pine ink for all-day eye comfort.",
       "native": {
         "preset": "Everforest Light",
         "background": "#F2F5EF",
@@ -315,6 +489,114 @@
       }
     },
     {
+      "id": "sakura-mist",
+      "name": "Sakura Mist",
+      "zhName": "樱吹雪 · 薄雾粉白",
+      "mode": "light",
+      "category": "studio-original",
+      "license": "MIT (Original)",
+      "description": "清透不甜腻的早樱薄雾白与深紫檀墨字，搭配绯樱粉点缀，轻盈雅致。",
+      "enDescription": "Delicate spring-blossom mist white with plum-charcoal text and sakura rose accents.",
+      "native": {
+        "preset": "Legacy Light",
+        "background": "#FDF8F9",
+        "foreground": "#382C32",
+        "accent": "#D95B82",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#F6EEF0",
+        "cardBg": "#FFFFFF",
+        "borderColor": "rgba(217, 91, 130, 0.15)",
+        "codeBg": "#F4EAED",
+        "radius": "14px",
+        "glass": true
+      }
+    },
+    {
+      "id": "solarized-daylight",
+      "name": "Solarized Daylight",
+      "zhName": "日光羊皮 · 经典青",
+      "mode": "light",
+      "category": "open-source",
+      "license": "MIT (Solarized)",
+      "description": "光学级经典暖日光米黄底色配蓝灰墨水字，久经考验的全天候编程护眼配色。",
+      "enDescription": "Precision warm-daylight cream with teal-slate ink from the classic Solarized palette.",
+      "native": {
+        "preset": "Everforest Light",
+        "background": "#FDF6E3",
+        "foreground": "#475B62",
+        "accent": "#268BD2",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#F3ECD8",
+        "cardBg": "#FFFBF0",
+        "borderColor": "rgba(71, 91, 98, 0.12)",
+        "codeBg": "#EFE8D5",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
+      "id": "nord-snow",
+      "name": "Nord Snowstorm",
+      "zhName": "北欧雪原 · 极昼",
+      "mode": "light",
+      "category": "open-source",
+      "license": "MIT (Nord)",
+      "description": "柔和冰川灰白底色配北极深灰文字与峡湾蓝强调色，清爽不晃眼的冷调浅色。",
+      "enDescription": "Soft glacial snow-gray light mode with fjord-blue accents and zero glare.",
+      "native": {
+        "preset": "Legacy Light",
+        "background": "#ECEFF4",
+        "foreground": "#2E3440",
+        "accent": "#5E81AC",
+        "contrast": "default",
+        "font": "Inter",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#E3E7EE",
+        "cardBg": "#F5F7FA",
+        "borderColor": "rgba(46, 52, 64, 0.11)",
+        "codeBg": "#E1E6ED",
+        "radius": "12px",
+        "glass": false
+      }
+    },
+    {
+      "id": "gruvbox-sand",
+      "name": "Gruvbox Sand",
+      "zhName": "暖沙旧书 · 琥珀纸",
+      "mode": "light",
+      "category": "open-source",
+      "license": "MIT (Gruvbox)",
+      "description": "浓郁复古旧书黄纸底色搭配深褐墨字与琥珀金强调色，极具纸质阅读沉浸感。",
+      "enDescription": "Vintage warm sand paper light theme with rich espresso ink andochre gold accents.",
+      "native": {
+        "preset": "Gruvbox Material",
+        "background": "#FBF1C7",
+        "foreground": "#3C3836",
+        "accent": "#B57614",
+        "contrast": "default",
+        "font": "Google Sans",
+        "fontSize": 14
+      },
+      "enhanced": {
+        "sidebarBg": "#F2E5BC",
+        "cardBg": "#FDF6DA",
+        "borderColor": "rgba(60, 56, 54, 0.12)",
+        "codeBg": "#EFE1B6",
+        "radius": "10px",
+        "glass": false
+      }
+    },
+    {
       "id": "catppuccin-latte",
       "name": "Catppuccin Latte",
       "zhName": "猫布奇诺 · 拿铁",
@@ -322,6 +604,7 @@
       "category": "open-source",
       "license": "MIT (Catppuccin)",
       "description": "柔和淡蓝灰浅底搭配高级葡萄紫强调色，浅色模式中难得的温润柔和。",
+      "enDescription": "Crisp yet gentle cool-latte light palette with vibrant violet accents.",
       "native": {
         "preset": "Everforest Light",
         "background": "#EFF1F5",
@@ -348,6 +631,7 @@
       "category": "open-source",
       "license": "MIT (Rosé Pine)",
       "description": "奶油暖杏色背景配淡玫瑰粉强调色与紫灰文字，温柔高级的文艺浅色主题。",
+      "enDescription": "Warm morning-apricot paper paired with muted plum ink and soft rose accents.",
       "native": {
         "preset": "Everforest Light",
         "background": "#FAF4ED",
@@ -370,27 +654,37 @@
   "wallpapers": [
     {
       "id": "none",
-      "zhName": "无背景图（纯色/柔光）",
+      "zhName": "纯色无纹理",
       "name": "Pure Solid"
     },
     {
       "id": "aurora-mesh",
-      "zhName": "极光流体（原创程序化 SVG）",
-      "name": "Aurora Mesh (Procedural)"
+      "zhName": "极光流体 (SVG)",
+      "name": "Aurora Mesh (SVG)"
     },
     {
       "id": "topo-lines",
-      "zhName": "等高线微纹（原创程序化 SVG）",
-      "name": "Topographic Lines (Procedural)"
+      "zhName": "等高线微纹 (SVG)",
+      "name": "Topo Lines (SVG)"
     },
     {
       "id": "dot-matrix",
-      "zhName": "极客点阵（原创程序化 SVG）",
-      "name": "Dot Matrix (Procedural)"
+      "zhName": "极客点阵 (SVG)",
+      "name": "Dot Matrix (SVG)"
+    },
+    {
+      "id": "cyber-grid",
+      "zhName": "透视网格 (SVG)",
+      "name": "Cyber Grid (SVG)"
+    },
+    {
+      "id": "zen-waves",
+      "zhName": "和风青海波 (SVG)",
+      "name": "Zen Waves (SVG)"
     },
     {
       "id": "custom",
-      "zhName": "本地自定义图片（仅存本机）",
+      "zhName": "本地自定义图片",
       "name": "Custom Local Image"
     }
   ]

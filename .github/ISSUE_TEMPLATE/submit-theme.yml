@@ -1,0 +1,25 @@
+name: 🎨 投稿新主题配色 / Submit a New Theme
+description: 分享你用调色工坊制作的主题分享码 (agy-theme://v1/...)，审核通过后可收录进官方内置主题库！
+title: "[Theme] "
+labels: ["theme-submission"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 主题名称（中 / 英文）
+      placeholder: 例如：松烟墨绿 / Pine Ink
+    validations:
+      required: true
+  - type: textarea
+    id: share_code
+    attributes:
+      label: 主题分享码 (Share Code)
+      description: 在工坊点击「🔗 复制主题分享码」粘贴到下方
+      placeholder: "agy-theme://v1/..."
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 风格说明与截图（可选）
+      description: 简单描述灵感或直接拖拽粘贴一张实机换肤截图

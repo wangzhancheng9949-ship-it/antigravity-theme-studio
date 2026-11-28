@@ -1,9 +1,14 @@
 {
-  "name": "antigravity-themes",
-  "version": "0.3.0",
+  "name": "antigravity-theme-studio",
+  "version": "0.4.0",
   "private": false,
   "type": "module",
-  "description": "Cross-platform visual theme studio, native CSS variable remapper, and procedural wallpapers for Google Antigravity 2.0.",
+  "description": "Cross-platform visual theme studio, native CSS variable remapper, procedural wallpapers, and day/night scheduler for Google Antigravity 2.0.",
+  "homepage": "https://wangzhancheng9949-ship-it.github.io/antigravity-theme-studio/gallery/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio.git"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"
@@ -11,6 +16,7 @@
   "scripts": {
     "start": "node tools/studio-server.mjs",
     "sync": "node tools/sync-gallery.mjs",
+    "test": "node tools/verify-integrity.mjs",
     "daemon:stop": "node tools/daemon.mjs --stop"
   }
 }

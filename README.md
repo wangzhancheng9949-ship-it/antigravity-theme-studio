@@ -1,5 +1,6 @@
 # Antigravity Theme Studio
 
+[![CI](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/wangzhancheng9949-ship-it/antigravity-theme-studio?color=7c6bf0)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-3b82f6)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
@@ -82,27 +83,37 @@ chmod +x start-studio.sh
 
 ---
 
-## 内置 14 套精选主题
+## 内置 24 套精选主题（全部通过 WCAG AA/AAA 对比度校验）
 
-### 深色主题（8 套）
+### 深色主题（14 套）
 | ID | 名称 | 中文名 | 授权来源 | 背景色 | 前景色 | 强调色 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `terracotta-charcoal` | Terracotta Charcoal | 赤陶暖炭 | MIT (Original) | `#1F1E1D` | `#ECEAE4` | `#D97757` |
 | `obsidian-nebula` | Obsidian Nebula | 黑曜星云 | MIT (Original) | `#0F1014` | `#E6E8F0` | `#7C6BF0` |
 | `midnight-cobalt` | Midnight Cobalt | 极夜钴蓝 | MIT (Original) | `#121316` | `#E4E6EB` | `#3B82F6` |
 | `graphite-coral` | Graphite Coral | 石墨珊瑚 | MIT (Original) | `#141417` | `#F0F0F5` | `#FF6363` |
+| `emerald-matrix` | Emerald Matrix | 翡翠矩阵 | MIT (Original) | `#0D1311` | `#D8ECE3` | `#10B981` |
+| `oled-pitch-amber` | OLED Pitch Amber | 纯黑流金 · OLED | MIT (Original) | `#050506` | `#E6E6E8` | `#F59E0B` |
 | `catppuccin-mocha` | Catppuccin Mocha | 猫布奇诺 · 摩卡 | MIT (Catppuccin) | `#1E1E2E` | `#CDD6F4` | `#CBA6F7` |
 | `tokyo-night` | Tokyo Night | 东京之夜 | MIT (Tokyo Night) | `#1A1B26` | `#C0CAF5` | `#7AA2F7` |
+| `dracula-velvet` | Dracula Velvet | 德古拉 · 丝绒暗紫 | MIT (Dracula) | `#282A36` | `#F8F8F2` | `#BD93F9` |
+| `gruvbox-espresso` | Gruvbox Espresso | 复古浓缩 · 暖褐 | MIT (Gruvbox) | `#1D2021` | `#EBDBB2` | `#FE8019` |
+| `ayu-mirage` | Ayu Mirage | 蜃景深海 · 暖金 | MIT (Ayu) | `#1F2430` | `#CCCAC2` | `#FFCC66` |
+| `nordic-frost` | Nordic Frost | 极地冰川 · 霜青 | MIT (Nord) | `#2E3440` | `#ECEFF4` | `#88C0D0` |
 | `rose-pine` | Rosé Pine | 玫瑰松 · 暗夜 | MIT (Rosé Pine) | `#191724` | `#E0DEF4` | `#EBBCBA` |
 | `kanagawa-wave` | Kanagawa Wave | 神奈川海浪 | MIT (Kanagawa) | `#1F1F28` | `#DCD7BA` | `#7E9CD8` |
 
-### 浅色主题（6 套）
+### 浅色主题（10 套）
 | ID | 名称 | 中文名 | 授权来源 | 背景色 | 前景色 | 强调色 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `editorial-parchment` | Editorial Parchment | 羊皮书卷 | MIT (Original) | `#F5F4EE` | `#2D2B28` | `#C96442` |
 | `ivory-studio` | Ivory Studio | 象牙简白 | MIT (Original) | `#FBFBFA` | `#37352F` | `#2383E2` |
 | `silver-frost` | Silver Frost | 极简霜白 | MIT (Original) | `#F5F5F7` | `#1D1D1F` | `#0071E3` |
 | `matcha-washi` | Matcha Washi | 抹茶和纸 | MIT (Original) | `#F2F5EF` | `#2C362B` | `#4A7C59` |
+| `sakura-mist` | Sakura Mist | 樱吹雪 · 薄雾粉白 | MIT (Original) | `#FDF8F9` | `#382C32` | `#D95B82` |
+| `solarized-daylight` | Solarized Daylight | 日光羊皮 · 经典青 | MIT (Solarized) | `#FDF6E3` | `#475B62` | `#268BD2` |
+| `nord-snow` | Nord Snowstorm | 北欧雪原 · 极昼 | MIT (Nord) | `#ECEFF4` | `#2E3440` | `#5E81AC` |
+| `gruvbox-sand` | Gruvbox Sand | 暖沙旧书 · 琥珀纸 | MIT (Gruvbox) | `#FBF1C7` | `#3C3836` | `#B57614` |
 | `catppuccin-latte` | Catppuccin Latte | 猫布奇诺 · 拿铁 | MIT (Catppuccin) | `#EFF1F5` | `#4C4F69` | `#8839EF` |
 | `rose-pine-dawn` | Rosé Pine Dawn | 玫瑰松 · 晨曦 | MIT (Rosé Pine) | `#FAF4ED` | `#575279` | `#D7827E` |
 

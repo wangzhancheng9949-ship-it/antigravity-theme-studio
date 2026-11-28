@@ -52,6 +52,22 @@ function buildProceduralSvgDataUrl(wallpaperId, accentHex, fgHex, isDark) {
     </svg>`);
   }
 
+  if (wallpaperId === "cyber-grid") {
+    return enc(`<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="${accentHex}" stroke-opacity="${isDark ? 0.18 : 0.14}" stroke-width="0.9"/>
+    </svg>`);
+  }
+
+  if (wallpaperId === "zen-waves") {
+    return enc(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40">
+      <g fill="none" stroke="${accentHex}" stroke-opacity="${isDark ? 0.16 : 0.13}" stroke-width="1.1">
+        <path d="M 0 40 A 40 40 0 0 1 80 40"/>
+        <path d="M 14 40 A 26 26 0 0 1 66 40"/>
+        <path d="M 28 40 A 12 12 0 0 1 52 40"/>
+      </g>
+    </svg>`);
+  }
+
   return "";
 }
 
@@ -90,6 +106,12 @@ export function buildPageApplyExpression(options) {
     if (wallpaperId === "dot-matrix") {
       bgRepeat = "repeat";
       bgSize = "28px 28px";
+    } else if (wallpaperId === "cyber-grid") {
+      bgRepeat = "repeat";
+      bgSize = "44px 44px";
+    } else if (wallpaperId === "zen-waves") {
+      bgRepeat = "repeat";
+      bgSize = "80px 40px";
     } else if (wallpaperId === "topo-lines") {
       bgRepeat = "repeat";
       bgSize = "600px 400px";

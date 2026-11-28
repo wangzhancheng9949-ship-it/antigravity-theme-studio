@@ -25,3 +25,23 @@ Several community color schemes included in `themes/themes.json` are adapted fro
 4. **Kanagawa** (`kanagawa-wave`)
    - Source: https://github.com/rebelot/kanagawa.nvim
    - Copyright (c) 2021 Tommaso Laurenzi — Licensed under the MIT License.
+
+5. **Dracula** (`dracula-velvet`)
+   - Source: https://github.com/dracula/dracula-theme
+   - Copyright (c) 2013-present Zeno Rocha — Licensed under the MIT License.
+
+6. **Gruvbox** (`gruvbox-espresso`, `gruvbox-sand`)
+   - Source: https://github.com/morhetz/gruvbox
+   - Copyright (c) 2012 Pavel Pertsev — Licensed under the MIT License.
+
+7. **Ayu** (`ayu-mirage`)
+   - Source: https://github.com/ayu-theme/ayu-colors
+   - Copyright (c) Ike Ku — Licensed under the MIT License.
+
+8. **Nord** (`nordic-frost`, `nord-snow`)
+   - Source: https://github.com/nordtheme/nord
+   - Copyright (c) 2016-present Sven Greb — Licensed under the MIT License.
+
+9. **Solarized** (`solarized-daylight`)
+   - Source: https://github.com/altercation/solarized
+   - Copyright (c) 2011 Ethan Schoonover — Licensed under the MIT License.

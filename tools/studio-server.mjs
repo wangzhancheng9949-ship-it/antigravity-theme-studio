@@ -157,8 +157,20 @@ const server = http.createServer(async (req, res) => {
   const hostHeader = req.headers.host || "";
   if (!hostHeader.startsWith("127.0.0.1:") && !hostHeader.startsWith("localhost:")) {
     res.writeHead(403);
-    res.end("Forbidden");
+    res.end("Forbidden: Invalid Host");
     return;
+  }
+
+  // 防护外部网页跨域请求本地回环 API (CSRF / Drive-by protection)
+  if (req.method === "POST") {
+    const origin = req.headers.origin || "";
+    const fetchSite = req.headers["sec-fetch-site"] || "";
+    const allowedOrigins = new Set([`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`]);
+    if ((origin && !allowedOrigins.has(origin)) || fetchSite === "cross-site") {
+      res.writeHead(403);
+      res.end("Forbidden: Cross-origin request blocked");
+      return;
+    }
   }
 
   try {
@@ -360,7 +372,7 @@ server.on("error", async (err) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Antigravity Theme Studio v0.2.0 running at http://${HOST}:${PORT}`);
+  console.log(`Antigravity Theme Studio v${getLocalVersion()} running at http://${HOST}:${PORT}`);
   if (!process.argv.includes("--no-open")) {
     openExternalUrl(`http://${HOST}:${PORT}`);
   }
