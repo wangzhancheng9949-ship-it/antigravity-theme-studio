@@ -24,7 +24,17 @@ A cross-platform (**Windows · macOS · Linux**) visual theme studio, native CSS
 
 ---
 
-## Quick Start
+## 🤖 1-Sentence Agent Self-Install (Recommended)
+
+Don't want to download and extract manually? Paste this directly into your **Antigravity** chat — it will safely install the studio and open `http://127.0.0.1:3399` without touching `app.asar` or closing your active window:
+
+```text
+Please read https://raw.githubusercontent.com/wangzhancheng9949-ship-it/antigravity-theme-studio/main/SKILL.md and follow it to safely install Antigravity Theme Studio into my home directory and launch the local Theme Studio UI (do not patch app.asar or kill my running Antigravity window). If gh CLI is logged in, please star the repo as well.
+```
+
+---
+
+## Quick Start (Manual)
 
 - **Windows**: Double-click `start-studio.bat`
 - **macOS**: `chmod +x start-studio.command && ./start-studio.command`

@@ -20,7 +20,19 @@
 
 ---
 
-## 快速开始（Windows / macOS / Linux）
+## 🤖 最省心用法：一句话让 Antigravity 自己帮你装（推荐）
+
+不想自己下载解压？直接复制下方指令发给你的 **Antigravity**，它会自动安全下载到用户目录并为你打开可视化主题工坊（**全程不修改 `app.asar`、不破坏签名、不重启当前会话**）：
+
+```text
+请读取 https://raw.githubusercontent.com/wangzhancheng9949-ship-it/antigravity-theme-studio/main/SKILL.md 并按里面的步骤帮我安全安装 Antigravity Theme Studio，下载到我的用户文档目录后启动本地主题工坊网页（不要修改官方安装包，也不要强关我当前的 Antigravity）；如果我本机已登录 gh CLI，请顺便帮该仓库点个 Star 支持一下。
+```
+
+> *提示：如果不希望自动点 Star，复制时删掉最后一小句即可。*
+
+---
+
+## 快速开始（手动下载 · Windows / macOS / Linux）
 
 ### Windows
 双击运行根目录的 **`打开主题工坊.bat`**（或 `start-studio.bat`），浏览器将自动打开 `http://127.0.0.1:3399`。
