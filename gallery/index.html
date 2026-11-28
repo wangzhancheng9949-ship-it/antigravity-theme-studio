@@ -1111,6 +1111,25 @@
         badge.textContent = '🌐 在线静态预览模式（可自由调色与生成分享码）';
         try { customThemes = JSON.parse(localStorage.getItem('agy_studio_custom') || '[]'); } catch {}
         currentTheme = getAllThemes()[0];
+        const params = new URLSearchParams(location.search);
+        const qTheme = params.get('theme');
+        if (qTheme) {
+          const foundTheme = getAllThemes().find(x => x.id === qTheme);
+          if (foundTheme) currentTheme = foundTheme;
+        }
+        const qWp = params.get('wp');
+        if (qWp && ['none', 'aurora-mesh', 'topo-lines', 'dot-matrix'].includes(qWp)) {
+          wallpaperId = qWp;
+        }
+        const qOpacity = params.get('opacity');
+        if (qOpacity !== null) {
+          const parsedOp = Number(qOpacity);
+          if (!Number.isNaN(parsedOp) && parsedOp >= 0 && parsedOp <= 1) {
+            wallpaperOpacity = parsedOp;
+            document.getElementById('opacityRange').value = Math.round(wallpaperOpacity * 100);
+            document.getElementById('valOpacity').textContent = `${Math.round(wallpaperOpacity * 100)}%`;
+          }
+        }
         populateScheduleSelects('editorial-parchment', 'terracotta-charcoal');
         syncPickersFromTheme(currentTheme);
         renderList();

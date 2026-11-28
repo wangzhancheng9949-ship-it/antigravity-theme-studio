@@ -10,6 +10,25 @@
   <img src="./assets/hero-showcase.svg" alt="Antigravity Theme Studio Showcase" width="100%" />
 </p>
 
+## 实机工坊截图
+
+<p align="center">
+  <img src="./assets/screenshots/studio-obsidian-aurora.png" alt="Antigravity Theme Studio - Obsidian Nebula + Aurora Mesh" width="100%" />
+</p>
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./assets/screenshots/studio-parchment-light.png" alt="Editorial Parchment Light Theme" width="100%" />
+      <br /><sub>护眼浅色 · 羊皮书卷 (Editorial Parchment)</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./assets/screenshots/studio-catppuccin-topo.png" alt="Catppuccin Mocha + Topographic Lines" width="100%" />
+      <br /><sub>莫兰迪暗色 · 猫布奇诺 + 等高线纹理 (Catppuccin Mocha)</sub>
+    </td>
+  </tr>
+</table>
+
 为 **Google Antigravity 2.0 桌面端** 打造的跨平台（Windows · macOS · Linux）可视化主题工坊、原生色阶重映射引擎与程序化纹理壁纸工具。
 
 - **零侵入、不怕自动更新**：完全不修改 `app.asar` 与安装目录，不破坏 macOS / Windows 官方代码签名；客户端版本更新后依然无缝生效。

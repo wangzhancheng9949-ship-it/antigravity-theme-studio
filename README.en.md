@@ -10,6 +10,25 @@
   <img src="./assets/hero-showcase.svg" alt="Antigravity Theme Studio Showcase" width="100%" />
 </p>
 
+## Studio Screenshots
+
+<p align="center">
+  <img src="./assets/screenshots/studio-obsidian-aurora.png" alt="Antigravity Theme Studio - Obsidian Nebula + Aurora Mesh" width="100%" />
+</p>
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./assets/screenshots/studio-parchment-light.png" alt="Editorial Parchment Light Theme" width="100%" />
+      <br /><sub>Warm Daylight · Editorial Parchment</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./assets/screenshots/studio-catppuccin-topo.png" alt="Catppuccin Mocha + Topographic Lines" width="100%" />
+      <br /><sub>Pastel Dark · Catppuccin Mocha + Procedural Topographic Lines</sub>
+    </td>
+  </tr>
+</table>
+
 A cross-platform (**Windows · macOS · Linux**) visual theme studio, native CSS variable curve remapper, procedural wallpaper engine, and day/night auto-scheduler for **Google Antigravity 2.0 Desktop**.
 
 - **Non-Intrusive & Update-Proof**: Never modifies `app.asar` or application binaries, preserving official macOS / Windows code signatures across auto-updates.
