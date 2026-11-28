@@ -1,6 +1,5 @@
 # Antigravity Theme Studio
 
-[![CI](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/wangzhancheng9949-ship-it/antigravity-theme-studio?color=7c6bf0)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio/releases/latest)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-3b82f6)](https://github.com/wangzhancheng9949-ship-it/antigravity-theme-studio)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
